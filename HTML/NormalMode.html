@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../CSS/Styles.css">
+        <title>Trivia</title>
+    </head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>TriviaTime!</h1>
+        </header>
+        
+        <main>
+            <!-- Selección de categoría -->
+            <section id="category-selection">
+                <h2>Selecciona una categoría</h2>
+                <button onclick="startGame('ciencias')">Ciencias</button>
+                <button onclick="startGame('historia')">Historia</button>
+            </section>
+    
+            <!-- Juego de trivia -->
+            <section id="game" class="hide">
+                <div id="question-container">
+                    <h2 id="question">Pregunta</h2>
+                    <div id="timer">Tiempo restante: <span id="time-left">10</span> segundos</div>
+                    <div id="answers">
+                        <!-- Respuestas se generarán dinámicamente -->
+                    </div>
+                    <div id="feedback" class="feedback"></div>
+                </div>
+            </section>
+    
+            <!-- Sección de puntuación -->
+            <section id="score" class="hide">
+                <h2>Juego terminado</h2>
+                <p>Tu puntuación final es: <span id="final-score"></span></p>
+                <button id="restart-btn" onclick="restartGame()">Reiniciar</button>
+            </section>
+        </main>
+    
+    
+    </div>
+<script src="../JS/Generate_Ques.js"></script>
+
+</body>
+</html>

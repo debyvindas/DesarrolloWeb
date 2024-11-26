@@ -45,7 +45,8 @@
         <h1>Selecione su modo de juego</h1>
     </header>
     <main>
-        <button>Clásica</button>
+        <a href="../HTML/NormalMode.html">clasica</a>
+        <button href=>Clásica</button>
         <button>Uno Contra Uno</button>
         <button>Challenge</button>
         <button>Otro más</button>
@@ -63,43 +64,6 @@
         
     </div>
 </div>
-
-<div class="container">
-    <header>
-        <h1>TriviaTime!</h1>
-    </header>
-    
-    <main>
-        <!-- Selección de categoría -->
-        <section id="category-selection">
-            <h2>Selecciona una categoría</h2>
-            <button onclick="startGame('ciencias')">Ciencias</button>
-            <button onclick="startGame('historia')">Historia</button>
-        </section>
-
-        <!-- Juego de trivia -->
-        <section id="game" class="hide">
-            <div id="question-container">
-                <h2 id="question">Pregunta</h2>
-                <div id="timer">Tiempo restante: <span id="time-left">10</span> segundos</div>
-                <div id="answers">
-                    <!-- Respuestas se generarán dinámicamente -->
-                </div>
-                <div id="feedback" class="feedback"></div>
-            </div>
-        </section>
-
-        <!-- Sección de puntuación -->
-        <section id="score" class="hide">
-            <h2>Juego terminado</h2>
-            <p>Tu puntuación final es: <span id="final-score"></span></p>
-            <button id="restart-btn" onclick="restartGame()">Reiniciar</button>
-        </section>
-    </main>
-
-
-</div>
-
 <script src="../JS/Generate_Ques.js"></script>
 <script src="../JS/Log_In.js"></script>
 <script src="../JS/Sign_Up.js"></script>
