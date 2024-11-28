@@ -3,11 +3,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const correo = document.getElementById('correo');
     const password = document.getElementById('password');
     const modal = document.getElementById('FirstModal');
-    const toSignUpButton = document.getElementById('toSignUp');
+    const toSignUpButton = document.getElementById('openLoginModal');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const musicButton = document.getElementById('musicButton');
+    var SingModal = document.getElementById('signUpForm');
+    var LogInModal = document.getElementById('loginForm');
 
-    // Abrir el modal
-    document.getElementById('openModal').addEventListener('click', () => {
-        modal.style.display = 'block';
+    backgroundMusic.muted = false;
+    musicButton.addEventListener('click', () => {
+        if (backgroundMusic.paused) {
+            // Play the music
+            backgroundMusic.play()
+                .then(() => {
+                    musicButton.textContent = "Pausar musica"; // Update button text
+                    backgroundMusic.muted = false; // Ensure it's unmuted
+                })
+                .catch((error) => {
+                    console.error("Error playing music: ", error);
+                });
+        } else {
+            // Pause the music
+            backgroundMusic.pause();
+            musicButton.textContent = "Poner musica"; // Update button text
+        }
     });
 
     // Enviar el formulario de login
@@ -36,8 +54,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Cambiar al formulario de registro
     toSignUpButton.addEventListener('click', () => {
-        document.querySelector('.modal-LogIn').style.display = 'none';
-        document.querySelector('.modal-SignIn').style.display = 'block';
+        SingModal.style.display = 'none';
+        LogInModal.style.display = 'block';
     });
+    
 });
+
+
+
+
+
+
+
+
+    
+
 

@@ -3,70 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS/Styles.css">
+    <link rel="stylesheet" href="../CSS/StyleMain.css">
     <title>Trivia</title>
 </head>
 <body>
-
-<button id="openModal">Iniciar Sesión</button>
-
-<div id="FirstModal" class="modal">
-    <!-- Formulario Login -->
-    <div class="modal-LogIn">
-        <h2>Iniciar Sesión</h2>
-        <form id="loginForm">
-            <label for="correo">Correo:</label>
-            <input type="email" id="correo" name="correo" required>
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit" class="close">Entrar</button>
-        </form>
-        <button id="toSignUp" class="change">Registrar</button>  <!-- Botón para cambiar al formulario de registro -->
+<body>
+    <h1>TRIVIA TIME!</h1>
+    <audio id="backgroundMusic" autoplay loop muted>
+        <source src="../musikita/MANDALORIAN.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+    <div class="salchicha">
+        <h3>Modos de juego:</h3>
     </div>
-
-    <!-- Formulario Sign Up -->
-    <div class="modal-SignIn" style="display: none;">
-        <h2>Registrar</h2>
-        <form id="signUpForm">
-            <label for="nombreReg">Nombre:</label>
-            <input type="text" id="nombreReg" name="nombre" required>
-            <label for="correoReg">Correo:</label>
-            <input type="email" id="correoReg" name="correo" required>
-            <label for="passwordReg">Contraseña:</label>
-            <input type="password" id="passwordReg" name="password" required>
-            <button type="submit" class="close">Registrar</button>
-        </form>
-        <button id="toLogin" class="change">Iniciar sesión</button>
+    <div class="button-container">
+        <button onclick="redirectToGame(1)">Modo 1</button>
+        <button onclick="redirectToGame(2)">Modo 2</button>
+        <button onclick="redirectToGame(3)">Modo 3</button>
     </div>
-</div>
+    <button class="music-button" id="musicButton">Play Music</button>
 
-<div class="MainMenu">
-    <header>
-        <h1>Selecione su modo de juego</h1>
-    </header>
-    <main>
-        <a href="../HTML/NormalMode.html">clasica</a>
-        <button href=>Clásica</button>
-        <button>Uno Contra Uno</button>
-        <button>Challenge</button>
-        <button>Otro más</button>
-    </main>
-</div>
-
-<div class="UnoAUno">
-    <div class="pregunt">
-
-    </div>
-    <div class="respuestas">
-
-    </div>
-    <div class="stats">
-        
-    </div>
-</div>
 <script src="../JS/Generate_Ques.js"></script>
-<script src="../JS/Log_In.js"></script>
-<script src="../JS/Sign_Up.js"></script>
+
 
 </body>
 </html>

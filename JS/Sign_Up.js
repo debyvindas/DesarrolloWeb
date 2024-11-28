@@ -4,11 +4,31 @@ document.addEventListener('DOMContentLoaded', function(){
     const pass = document.getElementById('passwordReg');
     const nombre = document.getElementById('nombreReg');
     const modal = document.getElementById('FirstModal');
-    const toLogInpButton = document.getElementById('toLogin');
+    const toLogInpButton = document.getElementById('openSignUpModal');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const musicButton = document.getElementById('musicButton');
+    var SingModal = document.getElementById('signUpForm');
+    var LogInModal = document.getElementById('loginForm');
     
-    document.getElementById('openModal').addEventListener('click', () => {
-        modal.style.display = 'block';
-    });
+    backgroundMusic.muted = false;
+    musicButton.addEventListener('click', () => {
+    if (backgroundMusic.paused) {
+        // Play the music
+        backgroundMusic.play()
+            .then(() => {
+                musicButton.textContent = "Pausar musica"; // Update button text
+                backgroundMusic.muted = false; // Ensure it's unmuted
+            })
+            .catch((error) => {
+                console.error("Error playing music: ", error);
+            });
+    } else {
+        // Pause the music
+        backgroundMusic.pause();
+        musicButton.textContent = "Poner musica"; // Update button text
+    }
+});
+    
 
     Sign_Up.addEventListener('submit',(event) =>{
         event.preventDefault();
@@ -36,9 +56,9 @@ document.addEventListener('DOMContentLoaded', function(){
         .catch(error => console.error('Error al realizar el SignUp:', error));
     });
 
-    toLogInpButton.addEventListener('click', () => {
-        document.querySelector('.modal-LogIn').style.display = 'block';
-        document.querySelector('.modal-SignIn').style.display = 'none';
+    toLogInpButton.addEventListener('onclick', () => {
+        SingModal.style.display = 'Block';
+        LogInModal.style.display = 'none';
     });
 
 });

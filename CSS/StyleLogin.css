@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap');
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://th.bing.com/th/id/R.fa5409ce37c403e30b32eb56316cab99?rik=ksKpOunST%2bYvTw&pid=ImgRaw&r=0');
+            background-size: cover;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5em;
+            color: rgb(0, 0, 0);
+            text-shadow: 0 0 10px rgb(255, 255, 255), 0 0 20px rgb(255, 255, 255);
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1em;
+            font-family: 'Raleway', sans-serif, bold;
+            color: #cfcfcf;
+            text-shadow: 0 0 10px rgb(0, 0, 0), 0 0 10px rgb(255, 255, 255);
+            margin: 10px 0;
+        }
+
+        h3 {
+            font-size: 2em;
+            font-family: 'Raleway', sans-serif;
+            color: #000000;
+            text-shadow: 0 0 10px rgb(255, 255, 255), 0 0 20px rgb(255, 255, 255);
+            margin: 0;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: 1px solid rgb(255, 255, 255);
+            background-color: rgb(0, 0, 0);
+            color: rgb(255, 255, 255);
+            cursor: pointer;
+            border-radius: 8px;
+            text-shadow: 0 0 5px rgb(0, 0, 0);
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background-color: rgb(255, 255, 255);
+            color: #000;
+            text-shadow: none;
+            box-shadow: 0 0 10px rgb(0, 0, 0);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 400px;
+            padding: 20px;
+            background-color: #000; /* Fondo negro */
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* Sutil resplandor blanco */
+            border: 2px solid #fff; /* Borde blanco */
+            text-align: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content h2 {
+            font-size: 2em;
+            color: #fff; /* Texto blanco */
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Sutil brillo blanco */
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            font-size: 1em;
+            margin-bottom: 5px;
+            color: #fff; /* Texto blanco */
+            width: 100%;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #fff; /* Borde blanco */
+            border-radius: 8px;
+            font-size: 1em;
+            background: #000; /* Fondo negro */
+            color: #fff; /* Texto blanco */
+            outline: none;
+            width: 100%;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); /* Sutil brillo en los bordes */
+        }
+
+        input[type="text"]::placeholder, input[type="email"]::placeholder, input[type="password"]::placeholder {
+            color: rgba(255, 255, 255, 0.7); /* Placeholder translúcido */
+        }
+
+        input:focus {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Brillo blanco al enfocar */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: 2px solid #fff; /* Borde blanco */
+            background-color: #000; /* Fondo negro */
+            color: #fff; /* Texto blanco */
+            cursor: pointer;
+            border-radius: 8px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Sutil brillo blanco */
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #fff; /* Fondo blanco al pasar el mouse */
+            color: #000; /* Texto negro */
+            text-shadow: none;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* Resplandor blanco */
+        }
+
+        button.close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            color: #fff; /* Blanco */
+            cursor: pointer;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Brillo blanco */
+            transition: color 0.3s ease;
+        }
+
+        button.close-modal:hover {
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); /* Brillo más intenso */
+        }
+
+        @keyframes fadeIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9); /* Fondo negro translúcido */
+            justify-content: center;
+            align-items: center;
+        }
+        .salchicha {
+            background-color: rgb(0, 0, 0); /* Fondo negro */
+            color: rgb(255, 255, 255); /* Texto blanco */
+            padding: 10px 20px; /* Espaciado interior */
+            border-radius: 50px; /* Bordes redondeados */
+            display: inline-block;
+            margin-bottom: 30px;
+            max-width: 80%; /* Ancho máximo para texto largo */
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* Resplandor */
+        }
+        .music-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid #fff;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            text-shadow: 0 0 5px #fff;
+            transition: all 0.3s ease;
+        }
+
+        .music-button:hover {
+            background-color: #fff;
+            color: #000;
+        }
