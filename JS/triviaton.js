@@ -148,12 +148,17 @@ const questions = [
   let streak = 0;
   let rewards = ["Medalla de Bronce ", "Medalla de Plata", "Medalla de Oro"];
   
+
   function startGame() {
     streak = 0;
     currentQuestionIndex = 0;
     document.getElementById("streak").innerText = `Racha: ${streak}`;
     document.getElementById("reward").innerText = "";
     loadQuestion();
+    document.getElementById("Restart-btn").style.display = "block";
+    document.getElementById("Restart-btn").style.justifySelf = "center";
+  document.getElementById("start-btn").style.display = "none";
+
   }
   
   function loadQuestion() {
@@ -200,4 +205,7 @@ const questions = [
     }
     document.getElementById("reward").innerText = rewardText ? `Premio: ${rewardText}` : "";
   }
+
+  var res = document.getElementById("Restart-btn");
+  var star = document.getElementById("start-btn");
   

@@ -86,3 +86,24 @@ body {
     text-shadow: none;
     box-shadow: 0 0 20px rgba(255, 255, 255, 1); /* Resplandor blanco más intenso */
 }
+
+#Restart-btn {
+  margin-top: 20px;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.9); /* Fondo negro */
+  color: #fff; /* Texto blanco */
+  border: 2px solid rgba(255, 255, 255, 0.8); /* Borde blanco brillante */
+  border-radius: 10px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Resplandor blanco */
+  transition: all 0.3s ease;
+  display: none;
+}
+
+#Restart-btn:hover {
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco */
+  color: #000; /* Texto negro */
+  text-shadow: none;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 1); /* Resplandor blanco más intenso */
+}
