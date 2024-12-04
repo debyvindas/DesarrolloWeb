@@ -1,53 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco */
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
-    background-color: #f4f4f9;
-    background-image: url('https://www.leonhunter.com/wp-content/uploads/2018/11/Por-que-son-obligatorios-los-signos-de-apertura.jpg'); 
+    text-align: center;
+    background-image: url('https://th.bing.com/th/id/R.fa5409ce37c403e30b32eb56316cab99?rik=ksKpOunST%2bYvTw&pid=ImgRaw&r=0');
     background-size: cover;
-  }
-  
-  #game-container {
+    background-position: center;
+}
+
+#game-container {
     text-align: center;
     max-width: 500px;
-    background-color: #fff;
+    background-color: rgba(0, 0, 0, 0.85); /* Fondo negro translúcido */
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  #question {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-  }
-  
-  #answers button {
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); /* Resplandor blanco */
+    border: 2px solid rgba(255, 255, 255, 0.8); /* Borde blanco brillante */
+}
+
+#question {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8); /* Resplandor blanco */
+}
+
+#answers button {
     display: block;
-    margin: 5px auto;
+    margin: 10px auto;
     padding: 10px;
     width: 80%;
     cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  #answers button:hover {
-    background-color: #45a049;
-  }
-  
-  #streak, #reward {
-    font-size: 1.1em;
-    margin-top: 10px;
-  }
-  
-  #start-btn {
-    margin-top: 20px;
-    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo negro */
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.8); /* Borde blanco brillante */
+    border-radius: 10px;
     font-size: 1em;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Resplandor blanco */
+    transition: all 0.3s ease;
+}
+
+#answers button:hover {
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco */
+    color: #000; /* Texto negro */
+    text-shadow: none;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 1); /* Resplandor blanco más intenso */
+}
+
+#streak, #reward {
+    font-size: 1.2em;
+    margin-top: 20px;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Resplandor blanco */
+}
+
+#start-btn {
+    margin-top: 20px;
+    padding: 15px 30px;
+    font-size: 1.2em;
     cursor: pointer;
-  }
-  
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo negro */
+    color: #fff; /* Texto blanco */
+    border: 2px solid rgba(255, 255, 255, 0.8); /* Borde blanco brillante */
+    border-radius: 10px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Resplandor blanco */
+    transition: all 0.3s ease;
+}
+
+#start-btn:hover {
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco */
+    color: #000; /* Texto negro */
+    text-shadow: none;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 1); /* Resplandor blanco más intenso */
+}
