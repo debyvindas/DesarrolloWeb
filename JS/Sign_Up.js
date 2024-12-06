@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function(){
     const pass = document.getElementById('passwordReg');
     const nombre = document.getElementById('nombreReg');
     const modal = document.getElementById('FirstModal');
-    const toLogInpButton = document.getElementById('openSignUpModal');
     const backgroundMusic = document.getElementById('backgroundMusic');
     const musicButton = document.getElementById('musicButton');
     var SingModal = document.getElementById('signUpForm');
@@ -56,9 +55,5 @@ document.addEventListener('DOMContentLoaded', function(){
         .catch(error => console.error('Error al realizar el SignUp:', error));
     });
 
-    toLogInpButton.addEventListener('onclick', () => {
-        SingModal.style.display = 'Block';
-        LogInModal.style.display = 'none';
-    });
-
+  
 });

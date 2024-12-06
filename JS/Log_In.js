@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const correo = document.getElementById('correo');
     const password = document.getElementById('password');
     const modal = document.getElementById('FirstModal');
-    const toSignUpButton = document.getElementById('openLoginModal');
     const backgroundMusic = document.getElementById('backgroundMusic');
     const musicButton = document.getElementById('musicButton');
     var SingModal = document.getElementById('signUpForm');
@@ -53,10 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Cambiar al formulario de registro
-    toSignUpButton.addEventListener('click', () => {
-        SingModal.style.display = 'none';
-        LogInModal.style.display = 'block';
-    });
+
     
 });
 
