@@ -7,7 +7,6 @@
     <title>Trivia</title>
 </head>
 <body>
-<body>
     <h1>TRIVIA TIME!</h1>
     <audio id="backgroundMusic" autoplay loop muted>
         <source src="../musikita/MANDALORIAN.mp3" type="audio/mp3">
@@ -17,14 +16,23 @@
         <h3>Modos de juego:</h3>
     </div>
     <div class="button-container">
-        <button onclick="redirectToGame(1)">Modo 1</button>
-        <button onclick="redirectToGame(2)">Modo 2</button>
+        <button onclick="NormalMode()">Modo Clásico</button>
+        <button onclick="redirectToTriviaton()">Triviaton</button>
         <button onclick="redirectToGame(3)">Modo 3</button>
     </div>
     <button class="music-button" id="musicButton">Play Music</button>
 
-<script src="../JS/Generate_Ques.js"></script>
-
-
+    <script src="../JS/Generate_Ques.js"></script>
+    <script>
+        function redirectToGame(mode) {
+            window.location.href = 'juegoModo' + mode + '.html';
+        }
+        function redirectToTriviaton() {
+            window.location.href = 'triviaton.html';
+        }
+        function NormalMode() {
+            window.location.href = 'NormalMode.html';
+        }
+    </script>
 </body>
 </html>

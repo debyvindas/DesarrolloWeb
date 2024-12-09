@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 alert('¡Login exitoso!');
                 modal.style.display = 'none'; // Cerrar modal
+                window.location.href = '../HTML/Index.html';
             } else {
                 alert(data.message); // Mostrar error
             }
@@ -51,9 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error al realizar el login:', error));
     });
 
-    // Cambiar al formulario de registro
-
-    
 });
 
 

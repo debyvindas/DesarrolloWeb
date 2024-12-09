@@ -7,32 +7,32 @@
     <title>LogIn</title>
 </head>
 <body>
-        <audio id="backgroundMusic" autoplay loop muted>
-            <source src="../musikita/FORCE.mp3" type="audio/mp3">
-            Your browser does not support the audio element.
-        </audio>
-        <div>
-            <h3>Bienvenido a</h3>
-            <h1>TRIVIA TIME!</h1>
-            <div class="salchicha">
-                <h2>¡Una plataforma de aprendizaje para todos!</h2>
-                <h2>Pon a prueba tu conocimiento sobre historia, ciencias, deportes, y mucho más.</h2>
-            </div>
+    <audio id="backgroundMusic" autoplay loop muted>
+        <source src="../musikita/FORCE.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+    <div>
+        <h3>Bienvenido a</h3>
+        <h1>TRIVIA TIME!</h1>
+        <div class="salchicha">
+            <h2>¡Una plataforma de aprendizaje para todos!</h2>
+            <h2>Pon a prueba tu conocimiento sobre historia, ciencias, deportes, y mucho más.</h2>
         </div>
-    
+    </div>
+
     <div class="button-container">
         <button id="openLoginModal">Iniciar Sesión</button>
         <button id="openSignUpModal">No tengo cuenta</button>
     </div>
-    
+
     <div id="FirstModal" class="modal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal()">×</button>
-    
+
             <!-- Formulario Login -->
-            <div id="loginForm" class="form-container">
+            <div>
                 <h2>Iniciar Sesión</h2>
-                <form>
+                <form id="loginForm" class="form-container">
                     <label for="correo">Correo:</label>
                     <input type="email" id="correo" name="correo" placeholder="Ingrese su correo" required>
                     <label for="password">Contraseña:</label>
@@ -40,11 +40,11 @@
                     <button type="submit">Entrar</button>
                 </form>
             </div>
-    
+
             <!-- Formulario Sign Up -->
-            <div id="signUpForm" class="form-container" style="display: none;">
+            <div>
                 <h2>Registrar</h2>
-                <form>
+                <form id="signUpForm" class="form-container" style="display: none;">
                     <label for="nombre">Nombre:</label>
                     <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" required>
                     <label for="correoReg">Correo:</label>
@@ -56,10 +56,47 @@
             </div>
         </div>
     </div>
-    
+
     <button class="music-button" id="musicButton">Play Music</button>    
+
+    <script>
+        // Función para abrir el modal de inicio de sesión
+        function openLoginModal() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('signUpForm').style.display = 'none';
+            document.getElementById('FirstModal').style.display = 'block';
+            document.getElementById('loginForm').style.justifySelf = 'center';
+        }
+
+        // Función para abrir el modal de registro
+        function openSignUpModal() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signUpForm').style.display = 'block';
+            document.getElementById('FirstModal').style.display = 'block';
+            document.getElementById('signUpForm').style.justifySelf = 'center';
+        }
+
+        // Función para cerrar el modal
+        function closeModal() {
+            document.getElementById('FirstModal').style.display = 'none';
+        }
+
+        // Asignar las funciones a los botones
+        document.getElementById('openLoginModal').onclick = openLoginModal;
+        document.getElementById('openSignUpModal').onclick = openSignUpModal;
+    </script>
 
     <script src="../JS/Log_In.js"></script>
     <script src="../JS/Sign_Up.js"></script>    
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
