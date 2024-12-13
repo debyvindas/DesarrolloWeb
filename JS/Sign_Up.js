@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function(){
         const data = new FormData(signUpForm);
         data.append('action', 'signup');
 
-        fetch('http://localhost/DesarrolloWeb/JS/server.php', {
+        fetch('SignUp.php', {
             method: 'POST',
             body: data
         })
