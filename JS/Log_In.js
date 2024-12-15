@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data.append('action', 'login');
 
         // Enviar los datos al servidor con Fetch
-        fetch('http://localhost/DesarrolloWeb/JS/server.php', {
+        fetch('http://localhost/DesarrolloWebF/JS/server.php', {
             method: 'POST',
             body: data
         })

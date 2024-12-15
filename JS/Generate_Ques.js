@@ -1,53 +1,7 @@
-
-const questions = {
-    ciencias: [
-        {
-            question: "¿Cuál es el elemento químico más abundante en la Tierra?",
-            answers: [
-                { text: "Oxígeno", correct: true },
-                { text: "Carbono", correct: false },
-                { text: "Hidrógeno", correct: false },
-                { text: "Nitrógeno", correct: false }
-            ]
-        },
-        {
-            question: "¿Qué animal es conocido por su capacidad de regenerar partes de su cuerpo?",
-            answers: [
-                { text: "Estrella de mar", correct: true },
-                { text: "Tiburón", correct: false },
-                { text: "Perro", correct: false },
-                { text: "Gato", correct: false }
-            ]
-        }
-    ],
-    historia: [
-        {
-            question: "¿En qué año se descubrió América?",
-            answers: [
-                { text: "1492", correct: true },
-                { text: "1500", correct: false },
-                { text: "1453", correct: false },
-                { text: "1600", correct: false }
-            ]
-        },
-        {
-            question: "¿Quién fue el primer presidente de los Estados Unidos?",
-            answers: [
-                { text: "George Washington", correct: true },
-                { text: "Abraham Lincoln", correct: false },
-                { text: "Thomas Jefferson", correct: false },
-                { text: "John Adams", correct: false }
-            ]
-        }
-    ]
-};
-
-let currentCategory = '';
+let currentQuestions = [];
 let currentQuestionIndex = 0;
 let score = 0;
-let timeLeft = 10;
 let timerInterval;
-let canAnswer = true; // Variable para controlar si se puede responder
 
 const questionElement = document.getElementById('question');
 const answersElement = document.getElementById('answers');
@@ -56,53 +10,89 @@ const timerElement = document.getElementById('time-left');
 const scoreSection = document.getElementById('score');
 const finalScoreElement = document.getElementById('final-score');
 
-function startGame(category) {
-    currentCategory = category;
-    document.getElementById('category-selection').classList.add('hide');
-    document.getElementById('game').classList.remove('hide');
-    currentQuestionIndex = 0;
-    score = 0;
-    canAnswer = true;
-    showQuestion(questions[currentCategory][currentQuestionIndex]);
+function startGame(categoryId) {
+    const data = new FormData();
+    data.append('action', 'QuestionN'); // Acción del servidor
+    data.append('category_id', categoryId); // ID de categoría que se pasará al servidor
+
+    fetch('http://localhost/DesarrolloWebF/JS/server.php', {
+        method: 'POST',
+        body: data,
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la solicitud al servidor');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Preguntas recibidas:', data);
+
+            // Comprobar si hay preguntas para esta categoría
+            if (!data || Object.keys(data).length === 0) {
+                alert(`No hay preguntas disponibles para la categoría seleccionada.`);
+                return;
+            }
+
+            // Las preguntas se asignan a la categoría según su ID
+            const categoryQuestions = Object.values(data).flat();
+            if (categoryQuestions.length === 0) {
+                alert('No hay preguntas disponibles para esta categoría.');
+                return;
+            }
+
+            // Cargar las preguntas para la categoría seleccionada
+            currentQuestions = categoryQuestions;
+            currentQuestionIndex = 0;
+            score = 0;
+
+            // Cambiar de vista: ocultar selección de categoría y mostrar juego
+            document.getElementById('category-selection').classList.add('hide');
+            document.getElementById('game').classList.remove('hide');
+
+            // Mostrar la primera pregunta
+            showQuestion();
+        })
+        .catch(error => {
+            console.error('Error al cargar preguntas:', error);
+        });
 }
 
-function showQuestion(question) {
+function showQuestion() {
     resetTimer();
-    feedbackElement.textContent = ''; // Limpiar feedback
-    questionElement.textContent = question.question;
+
+    const questionData = currentQuestions[currentQuestionIndex];
+    questionElement.textContent = questionData.question;
     answersElement.innerHTML = '';
-    question.answers.forEach(answer => {
+
+    questionData.answers.forEach(answer => {
         const button = document.createElement('button');
         button.textContent = answer.text;
-        button.classList.add('btn');
-        button.addEventListener('click', () => selectAnswer(answer));
+        button.onclick = () => selectAnswer(answer.correct);
         answersElement.appendChild(button);
     });
-    canAnswer = true; // Permitir que se pueda responder nuevamente
+
     startTimer();
 }
 
-function selectAnswer(answer) {
-    if (!canAnswer) return; // Evitar que se puedan seleccionar respuestas después del tiempo o si ya se seleccionó una
-    clearInterval(timerInterval); // Detener temporizador cuando se selecciona una respuesta
-    canAnswer = false; // Evitar que se seleccione otra respuesta
-    if (answer.correct) {
+function selectAnswer(isCorrect) {
+    clearInterval(timerInterval);
+
+    if (isCorrect) {
         score++;
         feedbackElement.textContent = '¡Correcto!';
-        feedbackElement.classList.add('correct');
-        feedbackElement.classList.remove('incorrect');
     } else {
         feedbackElement.textContent = 'Incorrecto';
-        feedbackElement.classList.add('incorrect');
-        feedbackElement.classList.remove('correct');
     }
-    setTimeout(nextQuestion, 2000); // Esperar 2 segundos antes de cargar la siguiente pregunta
+
+    setTimeout(nextQuestion, 2000);
 }
 
 function nextQuestion() {
     currentQuestionIndex++;
-    if (currentQuestionIndex < questions[currentCategory].length) {
-        showQuestion(questions[currentCategory][currentQuestionIndex]);
+
+    if (currentQuestionIndex < currentQuestions.length) {
+        showQuestion();
     } else {
         endGame();
     }
@@ -115,16 +105,16 @@ function endGame() {
 }
 
 function startTimer() {
-    timeLeft = 10;
+    let timeLeft = 10;
     timerElement.textContent = timeLeft;
+
     timerInterval = setInterval(() => {
         timeLeft--;
         timerElement.textContent = timeLeft;
+
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
             feedbackElement.textContent = 'Tiempo agotado';
-            feedbackElement.classList.add('incorrect');
-            canAnswer = false; // Evitar que se pueda seleccionar respuesta después del tiempo
             setTimeout(nextQuestion, 2000);
         }
     }, 1000);
@@ -132,16 +122,6 @@ function startTimer() {
 
 function resetTimer() {
     clearInterval(timerInterval);
-    timerElement.textContent = '10'; // Restablecer el temporizador a 10 segundos
-    feedbackElement.textContent = ''; // Limpiar el feedback al cambiar la pregunta
-    feedbackElement.classList.remove('correct', 'incorrect');
-}
-
-function restartGame() {
-    // Reiniciar el juego y volver a la página inicial
-    scoreSection.classList.add('hide');
-    document.getElementById('category-selection').classList.remove('hide');
-    currentQuestionIndex = 0;
-    score = 0;
-    timeLeft = 10;
+    timerElement.textContent = 10;
+    feedbackElement.textContent = '';
 }

@@ -1,38 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../CSS/StylesClasica.css">
-        <title>Trivia</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/StylesClasica.css">
+    <title>Trivia</title>
+</head>
 <body>
-
     <div class="container">
         <header>
             <h1>TriviaTime!</h1>
         </header>
-        
+
         <main>
             <!-- Selección de categoría -->
             <section id="category-selection">
                 <h2>Selecciona una categoría</h2>
-                <button onclick="startGame('ciencias')">Ciencias</button>
-                <button onclick="startGame('historia')">Historia</button>
+                <div id="categories-container">
+                    <!-- Las categorías se cargarán dinámicamente -->
+                </div>
             </section>
-    
+
             <!-- Juego de trivia -->
             <section id="game" class="hide">
                 <div id="question-container">
                     <h2 id="question">Pregunta</h2>
                     <div id="timer">Tiempo restante: <span id="time-left">10</span> segundos</div>
-                    <div id="answers">
-                        <!-- Respuestas se generarán dinámicamente -->
-                    </div>
+                    <div id="answers"></div>
                     <div id="feedback" class="feedback"></div>
                 </div>
             </section>
-    
+
             <!-- Sección de puntuación -->
             <section id="score" class="hide">
                 <h2>Juego terminado</h2>
@@ -40,10 +38,42 @@
                 <button id="restart-btn" onclick="restartGame()">Reiniciar</button>
             </section>
         </main>
-    
-    
     </div>
-<script src="../JS/Generate_Ques.js"></script>
-
+    <script src="../JS/Generate_Ques.js"></script>
+    <script>
+        // Obtener categorías al cargar la página
+        document.addEventListener("DOMContentLoaded", function () {
+            const data = new FormData();
+            data.append('action', 'Category');
+            fetch('http://localhost/DesarrolloWebF/JS/server.php', {
+                method: 'POST',
+                body: data
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al obtener las categorías, estado: ' + response.status);
+                    }
+                    return response.text();  // Obtener la respuesta como texto primero
+                })
+                .then(text => {
+                    try {
+                        const rows = JSON.parse(text);
+                        console.log('Categorías cargadas:', rows);
+                        const container = document.getElementById('categories-container');
+                        rows.forEach(category => {
+                            const button = document.createElement('button');
+                            button.textContent = category.name;
+                            button.onclick = () => startGame(category.id);
+                            container.appendChild(button);
+                        });
+                    } catch (error) {
+                        console.error('Error al parsear JSON:', error);
+                        console.error('Respuesta del servidor:', text); 
+                    }
+                })
+                .catch(error => console.error('Error al cargar categorías:', error));
+        });
+    </script>
 </body>
 </html>
+
