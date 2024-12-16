@@ -32,7 +32,7 @@ if ($request == 'POST') {
         $conn->close();
     } 
     elseif ($action == 'QuestionN') {
-        $categoryId = isset($_GET['category_id']) ? intval($_GET['category_id']) : 0;
+        $categoryId = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
     
         $query = "
             SELECT c.Nombre AS category, p.ID_Pregunta, p.TXT AS question, r.ID_Respuesta, r.TXT AS answer, r.Correcta
@@ -41,8 +41,7 @@ if ($request == 'POST') {
             INNER JOIN Categoria c ON p.ID_Categoria = c.ID_Categoria
             WHERE p.ID_Categoria = $categoryId AND p.Activo = 1
         ";
-        $men = ["message" => $query, "status" => "success"];
-        echo json_encode($men);
+        
     
         $result = $conn->query($query);
 
