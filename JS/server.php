@@ -83,6 +83,53 @@ if ($request == 'POST') {
         echo json_encode($questionsByCategory, JSON_PRETTY_PRINT); // Mostrar con formato JSON legible
         $conn->close();
     }
+    elseif ($action == 'Triviaton') {
+        // Consulta para obtener todas las preguntas activas
+        $query = "
+            SELECT p.ID_Pregunta, p.TXT AS question, r.ID_Respuesta, r.TXT AS answer, r.Correcta
+            FROM Pregunta p
+            INNER JOIN Respuestas r ON p.ID_Pregunta = r.ID_Pregunta
+            WHERE p.Activo = 1
+        ";
+        
+        $result = $conn->query($query);
+    
+        $questions = []; // Arreglo para almacenar preguntas
+    
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $questionId = $row['ID_Pregunta'];
+    
+                // Si la pregunta aún no está en el arreglo, agregarla
+                if (!isset($questions[$questionId])) {
+                    $questions[$questionId] = [
+                        'question' => $row['question'],
+                        'answers' => []
+                    ];
+                }
+    
+                // Agregar las respuestas a la pregunta correspondiente
+                $questions[$questionId]['answers'][] = [
+                    'text' => $row['answer'],
+                    'correct' => $row['Correcta'] === 'yes'
+                ];
+            }
+        }
+    
+        // Convertir las preguntas a un array indexado y barajarlas
+        $questionsArray = array_values($questions);
+        shuffle($questionsArray); // Barajar preguntas aleatoriamente
+    
+        // Limitar el número de preguntas a un máximo de 30
+        $maxQuestions = 30;
+        $questionsArray = array_slice($questionsArray, 0, $maxQuestions);
+    
+        // Respuesta en formato JSON
+        header('Content-Type: application/json');
+        echo json_encode($questionsArray, JSON_PRETTY_PRINT);
+        $conn->close();
+    }
+    
     
     
     elseif ($action == 'Category'){
