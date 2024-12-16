@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+    <link rel="stylesheet" href="../CSS/StylesPerfil.css">
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Perfil de Usuario</h1>
+        <div class="profile-photo-container">
+            <!-- Imagen del perfil -->
+            <img id="profile-photo" src="https://via.placeholder.com/150" alt="Foto de Perfil">
+            
+            <!-- Botón estilizado -->
+            <label for="photo-upload" class="file-upload-label">Cambiar imagen de perfil</label>
+            <input type="file" id="photo-upload" accept="image/*" onchange="changePhoto()">
+        </div>
+
+        <div class="profile-info">
+            <h3 id="user-name">Pepito suarez</h3>
+            <p id="user-email">pepito@ejemplo.com</p>
+            <div class="stats">
+                <p>Partidas Totales: <span id="total-games">0</span></p>
+                <p>Puntuación Total: <span id="total-score">0</span></p>
+            </div>
+        </div>
+            <!-- Botón de salir -->
+    <button class="logout-button" onclick="logout()">Salir</button>
+    </div>
+
+    <script>
+        function logout() {
+            window.location.href = "login.html"; // Cambia 'login.html' por tu página de destino
+        }
+        function changePhoto() {
+            const fileInput = document.getElementById('photo-upload');
+            const profilePhoto = document.getElementById('profile-photo');
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profilePhoto.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>

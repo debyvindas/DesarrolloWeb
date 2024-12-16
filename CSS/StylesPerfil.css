@@ -1,0 +1,139 @@
+/* Reset y configuración básica */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('https://th.bing.com/th/id/R.fa5409ce37c403e30b32eb56316cab99?rik=ksKpOunST%2bYvTw&pid=ImgRaw&r=0');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.profile-container {
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 12px;
+    padding: 30px 20px;
+    width: 350px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Título principal */
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2em; /* Reducido para mayor equilibrio */
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    color: #fff;
+}
+
+/* Subtítulo */
+h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.25em; /* Más pequeño que h1 */
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #f0f0f0;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+}
+
+/* Encabezados de sección */
+h3 {
+    font-size: 1.2em; /* Tamaño más discreto */
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 5px;
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+/* Información del perfil */
+.profile-info p {
+    font-size: 1em;
+    color: #ddd;
+    margin-bottom: 5px;
+    line-height: 1.4; /* Espaciado de línea para mayor legibilidad */
+}
+
+/* Estadísticas */
+.stats {
+    margin-top: 15px;
+}
+
+.stats p {
+    font-size: 0.95em; /* Texto más pequeño para detalles */
+    margin: 5px 0;
+    font-weight: 400;
+    color: #ddd;
+}
+
+/* Contenedor de la imagen y el botón */
+.profile-photo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+#profile-photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+    background-color: #666;
+    border: 1px solid #000;
+}
+
+/* Botón estilizado */
+.file-upload-label {
+    display: inline-block;
+    padding: 8px 18px;
+    font-size: 1em;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.file-upload-label:hover {
+    background-color: #ddd;
+}
+
+#photo-upload {
+    display: none; /* Oculta el input */
+}
+
+/* Botón de Salir */
+.logout-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+    border: 2px solid #fff;
+    border-radius: 10px;
+    text-shadow: 0 0 5px rgb(255, 255, 255);
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    margin-top: 30px;
+}
+
+.logout-button:hover {
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    text-shadow: none;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
