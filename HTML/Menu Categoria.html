@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú con Neon y Modal</title>
+    <link rel="stylesheet" href="../CSS/StyleAdmin.css">
+</head>
+<body>
+    <h1>Menú de Administración</h1>
+    <div class="menu-container">
+        <!-- Botón insertar pregunta -->
+        <div>
+            <button class="neon-green" onclick="abrirModal('pregunta')">Insertar Pregunta</button>
+        </div>
+
+        <!-- Botón insertar categoría -->
+        <div>
+            <button class="neon-blue" onclick="abrirModal('categoria')">Insertar Categoría</button>
+        </div>
+
+        <!-- Botones para activar/desactivar categoría -->
+        <div>
+            <button class="neon-blue" onclick="abrirModal('activar')">Activar Categoría</button>
+            <button class="neon-red" onclick="abrirModal('desactivar')">Desactivar Categoría</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Modal</h2>
+            <div id="modal-body">
+                <!-- Contenido del modal generado dinámicamente -->
+            </div>
+            <button class="neon-blue" onclick="procesarModal()">Confirmar</button>
+            <button class="neon-red" onclick="cerrarModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        let accionActual = '';
+
+        function abrirModal(accion) {
+            accionActual = accion;
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+
+            if (accion === 'pregunta') {
+                modalTitle.textContent = 'Insertar Pregunta';
+                modalBody.innerHTML = `
+                    <input type="text" id="pregunta" placeholder="Escribir pregunta">
+                    <br>
+                    <input type="text" id="respuesta-correcta" placeholder="Escribir respuesta correcta">
+                    <br>
+                    <input type="text" id="respuesta-incorrecta-1" placeholder="Escribir respuesta incorrecta 1">
+                    <br>
+                    <input type="text" id="respuesta-incorrecta-2" placeholder="Escribir respuesta incorrecta 2">
+                    <br>
+                    <input type="text" id="respuesta-incorrecta-3" placeholder="Escribir respuesta incorrecta 3">
+                `;
+            } else if (accion === 'categoria') {
+                modalTitle.textContent = 'Insertar Categoría';
+                modalBody.innerHTML = `
+                    <input type="text" id="categoria" placeholder="Escribir categoría">
+                `;
+            } else if (accion === 'activar' || accion === 'desactivar') {
+                modalTitle.textContent = accion === 'activar' ? 'Activar Categoría' : 'Desactivar Categoría';
+                modalBody.innerHTML = `
+                    <input type="text" id="modal-categoria" placeholder="Escribir categoría">
+                `;
+            }
+
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function procesarModal() {
+            if (accionActual === 'pregunta') {
+                const pregunta = document.getElementById('pregunta').value;
+                const respuestaCorrecta = document.getElementById('respuesta-correcta').value;
+                const respuestaIncorrecta1 = document.getElementById('respuesta-incorrecta-1').value;
+                const respuestaIncorrecta2 = document.getElementById('respuesta-incorrecta-2').value;
+                const respuestaIncorrecta3 = document.getElementById('respuesta-incorrecta-3').value;
+
+                if (pregunta && respuestaCorrecta && respuestaIncorrecta1 && respuestaIncorrecta2 && respuestaIncorrecta3) {
+                    alert(`Pregunta insertada: ${pregunta}\nRespuesta correcta: ${respuestaCorrecta}\nRespuestas incorrectas: ${respuestaIncorrecta1}, ${respuestaIncorrecta2}, ${respuestaIncorrecta3}`);
+                } else {
+                    alert('Por favor, complete todos los campos.');
+                }
+            } else if (accionActual === 'categoria') {
+                const categoria = document.getElementById('categoria').value;
+                if (categoria) {
+                    alert(`Categoría insertada: ${categoria}`);
+                } else {
+                    alert('Por favor, escribe una categoría.');
+                }
+            } else if (accionActual === 'activar' || accionActual === 'desactivar') {
+                const categoria = document.getElementById('modal-categoria').value;
+                if (categoria) {
+                    alert(`Categoría ${accionActual}: ${categoria}`);
+                } else {
+                    alert('Por favor, escribe una categoría.');
+                }
+            }
+
+            cerrarModal();
+        }
+
+        function cerrarModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
