@@ -18,14 +18,15 @@
     <div class="button-container">
         <button onclick="NormalMode()">Modo Clásico</button>
         <button onclick="redirectToTriviaton()">Triviaton</button>
-        <button onclick="redirectToGame(3)">Modo 3</button>
+        <button onclick="redirectToPvP()">Player VS Player</button>
     </div>
     <button class="music-button" id="musicButton">Play Music</button>
 
     <script src="../JS/Generate_Ques.js"></script>
     <script>
-        function redirectToGame(mode) {
-            window.location.href = 'juegoModo' + mode + '.html';
+        
+        function redirectToPvP() {
+            window.location.href = 'PvP.html';
         }
         function redirectToTriviaton() {
             window.location.href = 'triviaton.html';

@@ -129,6 +129,48 @@ if ($request == 'POST') {
         echo json_encode($questionsArray, JSON_PRETTY_PRINT);
         $conn->close();
     }
+    elseif ($action == 'PvP') {
+        $query = "
+            SELECT p.ID_Pregunta, p.TXT AS question, r.ID_Respuesta, r.TXT AS answer, r.Correcta
+            FROM Pregunta p
+            INNER JOIN Respuestas r ON p.ID_Pregunta = r.ID_Pregunta
+            WHERE p.Activo = 1
+            ORDER BY RAND()
+            LIMIT 16
+        ";
+    
+        $result = $conn->query($query);
+    
+        $questions = [];
+        
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $questionId = $row['ID_Pregunta'];
+    
+                // Si la pregunta aún no está en el arreglo, la agregamos
+                if (!isset($questions[$questionId])) {
+                    $questions[$questionId] = [
+                        'question' => $row['question'],
+                        'answers' => []
+                    ];
+                }
+    
+                // Añadir respuestas a la pregunta correspondiente
+                $questions[$questionId]['answers'][] = [
+                    'text' => $row['answer'],
+                    'correct' => $row['Correcta'] === 'Si'
+                ];
+            }
+        }
+    
+        // Reindexar preguntas
+        $questions = array_values($questions);
+    
+        // Enviar preguntas en formato JSON
+        header('Content-Type: application/json');
+        echo json_encode($questions, JSON_PRETTY_PRINT);
+        $conn->close();
+    }
     
     
     
