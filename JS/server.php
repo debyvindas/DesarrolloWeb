@@ -31,6 +31,99 @@ if ($request == 'POST') {
 
         $conn->close();
     } 
+    elseif ($action == 'insertPregunta') {
+        $pregunta = $_POST['pregunta'];
+        $respuestaCorrecta = $_POST['respuestaCorrecta'];
+        $respuestaIncorrecta1 = $_POST['respuestaIncorrecta1'];
+        $respuestaIncorrecta2 = $_POST['respuestaIncorrecta2'];
+        $respuestaIncorrecta3 = $_POST['respuestaIncorrecta3'];
+        $categoriaId = $_POST['categoriaId'];
+    
+        // Obtener el último ID_Pregunta insertado (el ID más alto)
+        $sqlUltimoIdPregunta = "SELECT MAX(ID_Pregunta) AS ultimo_id FROM Pregunta";
+        $resultPregunta = $conn->query($sqlUltimoIdPregunta);
+        $rowPregunta = $resultPregunta->fetch_assoc();
+        $nuevoIdPregunta = $rowPregunta['ultimo_id'] + 1;  // Sumar 1 al último ID para el nuevo
+    
+        // Insertar la pregunta con el nuevo ID_Pregunta
+        $sqlPregunta = "INSERT INTO Pregunta (ID_Pregunta, ID_Categoria, TXT, Dificultad, Puntuacion, Activo) 
+                        VALUES (?, ?, ?, 1, 1, 1)";
+        $stmt = $conn->prepare($sqlPregunta);
+        $stmt->bind_param('iis', $nuevoIdPregunta, $categoriaId, $pregunta);
+        $stmt->execute();
+    
+        // Obtener el último ID_Respuesta insertado (el ID más alto)
+        $sqlUltimoIdRespuesta = "SELECT MAX(ID_Respuesta) AS ultimo_id FROM Respuestas";
+        $resultRespuesta = $conn->query($sqlUltimoIdRespuesta);
+        $rowRespuesta = $resultRespuesta->fetch_assoc();
+        $nuevoIdRespuesta = $rowRespuesta['ultimo_id'] + 1;  // Sumar 1 al último ID para el nuevo
+    
+        // Insertar las respuestas con los nuevos ID_Respuesta
+        $respuestas = [
+            [$respuestaCorrecta, 'yes'],
+            [$respuestaIncorrecta1, 'no'],
+            [$respuestaIncorrecta2, 'no'],
+            [$respuestaIncorrecta3, 'no']
+        ];
+    
+        foreach ($respuestas as $respuesta) {
+            $sqlRespuesta = "INSERT INTO Respuestas (ID_Respuesta, ID_Pregunta, TXT, Correcta) 
+                             VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sqlRespuesta);
+            $stmt->bind_param('iiss', $nuevoIdRespuesta, $nuevoIdPregunta, $respuesta[0], $respuesta[1]);
+            $stmt->execute();
+    
+            // Incrementar el ID_Respuesta para la siguiente iteración
+            $nuevoIdRespuesta++;
+        }
+    
+        echo json_encode(["success" => true]);
+    }
+    
+    
+    elseif ($action == 'insertCategoria') {
+        $categoria = $_POST['categoria'];
+
+        $sql = "SELECT MAX(ID_Categoria) AS max_id FROM Categoria";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $newId = $row['max_id'] + 1;
+
+        $sqlInsert = "INSERT INTO Categoria (ID_Categoria, Nombre, Activo) 
+                      VALUES (?, ?, 1)";
+        $stmt = $conn->prepare($sqlInsert);
+        $stmt->bind_param('is', $newId, $categoria);
+        $stmt->execute();
+
+        echo json_encode(["success" => true]);
+    }
+    elseif ($action == 'cargarCategorias') {
+        $estado = $_POST['estado'];
+        $sql = "SELECT ID_Categoria AS id, Nombre AS name FROM Categoria WHERE Activo = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $estado);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $categorias = [];
+        while ($row = $result->fetch_assoc()) {
+            $categorias[] = $row;
+        }
+
+        echo json_encode($categorias);
+    }
+    elseif ($action == 'activarCategoria' || $action == 'desactivarCategoria') {
+        $categoriaId = $_POST['categoriaId'];
+        $estado = $action == 'activarCategoria' ? 1 : 0;
+        $sql = "UPDATE Categoria SET Activo = ? WHERE ID_Categoria = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ii', $estado, $categoriaId);
+        $stmt->execute();
+
+        echo json_encode(["success" => true]);
+    }
     elseif ($action == 'QuestionN') {
         $categoryId = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
     
@@ -194,52 +287,42 @@ if ($request == 'POST') {
             echo json_encode(['error' => 'Error en la consulta']); // Si hubo un error
         }
     }
-    elseif ($action == 'signup') {
+    elseif ($action == 'register') {
+        // Recoger los datos del formulario de registro
         $nombre = $_POST['nombre'];
         $correo = $_POST['correo'];
-        $password = $_POST['password']; // Ajustado para tomar la variable correcta
-
-        $conn = conectar();
-
-        $sql = "SELECT * FROM Usuario WHERE Correo = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('s', $correo);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        echo json_decode($result);
-
-        if ($result->num_rows > 0) {
+        $password = $_POST['password'];
+    
+        // Validar si el correo ya existe en la base de datos
+        $sqlCheckCorreo = "SELECT * FROM Usuario WHERE Correo = ?";
+        $stmtCheck = $conn->prepare($sqlCheckCorreo);
+        $stmtCheck->bind_param('s', $correo);
+        $stmtCheck->execute();
+        $resultCheck = $stmtCheck->get_result();
+    
+        if ($resultCheck->num_rows > 0) {
+            // El correo ya existe
             echo json_encode(["success" => false, "message" => "El correo ya está registrado."]);
         } else {
-            // Necesitas recuperar el último ID y sumarle 1 manualmente
-            $sql = "SELECT MAX(ID_Usuario) AS max_id FROM Usuario";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
-            $idUser = isset($row['max_id']) ? $row['max_id'] + 1 : 1;
-
-            // Inserción en la tabla Usuario
-            $sql = "INSERT INTO Usuario (ID_Usuario, ID_Rol, Nombre, Correo, Partidas_Jugadas, Dif_1, Dif_2, Dif_3, Res_H, Pun_T, Pass) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            
-            $idRol = 1;
-            $partidasJugadas = 0;
-            $punT = 0;
-
-            $stmt->bind_param('iisssii', $idUser, $idRol, $nombre, $correo, $password, $partidasJugadas, $punT);
-
-            if ($stmt->execute()) {
-                echo json_encode(["success" => true, "message" => "Registro exitoso."]);
-            } else {
-                echo json_encode(["success" => false, "message" => "Error al insertar el usuario: " . $stmt->error]);
-            }
+            // Obtener el último ID_Usuario insertado
+            $sqlUltimoId = "SELECT MAX(ID_Usuario) AS ultimo_id FROM Usuario";
+            $resultUltimoId = $conn->query($sqlUltimoId);
+            $rowUltimoId = $resultUltimoId->fetch_assoc();
+            $nuevoIdUsuario = $rowUltimoId['ultimo_id'] + 1;  // Incrementar el ID manualmente
+    
+            // Insertar el nuevo usuario en la base de datos
+            $sqlInsertUsuario = "INSERT INTO Usuario (ID_Usuario, ID_Rol, Nombre, Correo, Pass, Partidas_Jugadas, Dif_1, Dif_2, Dif_3, Res_H, Pun_T)
+                                 VALUES (?, 1, ?, ?, ?, 0, 0, 0, 0, 0, 0)";
+            $stmtInsert = $conn->prepare($sqlInsertUsuario);
+            $stmtInsert->bind_param('isss', $nuevoIdUsuario, $nombre, $correo, $password);
+            $stmtInsert->execute();
+    
+            echo json_encode(["success" => true, "message" => "Registro exitoso."]);
         }
-
-        $stmt->close();
+    
         $conn->close();
     }
+    
  } else {
     echo json_encode(["success" => false, "message" => "Método no permitido."]);
 }

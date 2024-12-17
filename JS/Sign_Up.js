@@ -1,59 +1,43 @@
-document.addEventListener('DOMContentLoaded', function(){
-    const signUpForm = document.getElementById('signUpForm');
-    const modal = document.getElementById('FirstModal');
-    const backgroundMusic = document.getElementById('backgroundMusic');
-    const musicButton = document.getElementById('musicButton');
+// Agregar al script que ya tienes para manejar el formulario de registro
 
-    // Configurar botón de música
-    backgroundMusic.muted = false;
-    musicButton.addEventListener('click', () => {
-        if (backgroundMusic.paused) {
-            backgroundMusic.play()
-                .then(() => {
-                    musicButton.textContent = "Pausar música"; // Actualizar texto del botón
-                    backgroundMusic.muted = false; // Asegurarse de que no esté en silencio
-                })
-                .catch((error) => {
-                    console.error("Error al reproducir música: ", error);
-                });
-        } else {
-            backgroundMusic.pause();
-            musicButton.textContent = "Poner música"; // Actualizar texto del botón
-        }
-    });
+document.getElementById('signUpForm').onsubmit = async function(event) {
+    event.preventDefault(); // Evitar el envío normal del formulario
 
-    // Enviar el formulario de registro
-    signUpForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // Evitar que recargue la página
+    // Obtener los valores del formulario
+    const nombre = document.getElementById('nombre').value;
+    const correo = document.getElementById('correoReg').value;
+    const password = document.getElementById('passwordReg').value;
 
-        const data = new FormData(signUpForm);
-        data.append('action', 'signup');
+    // Validación básica del formulario
+    if (!nombre || !correo || !password) {
+        alert("Por favor, complete todos los campos.");
+        return;
+    }
 
-        fetch('SignUp.php', {
+    // Crear el objeto con los datos a enviar
+    const data = new FormData();
+    data.append('action', 'register');
+    data.append('nombre', nombre);
+    data.append('correo', correo);
+    data.append('password', password);
+
+    // Enviar los datos al servidor usando fetch
+    try {
+        const response = await fetch('http://localhost/DesarrolloWebF/JS/server.php', {
             method: 'POST',
             body: data
-        })
-        .then(response => {
-            console.log('Respuesta completa del servidor:', response);
-            const contentType = response.headers.get('content-type');
-            console.log('Tipo de contenido:', contentType);
-            if (!response.ok || !contentType || !contentType.includes('application/json')) {
-                throw new Error('El servidor no devolvió JSON.');
-            }
-            return response.json(); // Intentar convertir a JSON
-        })
-        .then(data => {
-            console.log('Datos recibidos:', data);
-            if (data.success) {
-                alert('¡Registro exitoso!');
-                modal.style.display = 'none';
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error al realizar el registro:', error)
         });
         
-    });
-});
+        const result = await response.json();
+
+        if (result.success) {
+            alert(result.message); // Registro exitoso
+            closeModal(); // Cerrar el modal después del registro
+        } else {
+            alert(result.message); // Error si el correo ya existe
+        }
+    } catch (error) {
+        console.error("Error al registrar el usuario:", error);
+        alert("Hubo un error al intentar registrarte.");
+    }
+};

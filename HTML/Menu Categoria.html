@@ -9,17 +9,12 @@
 <body>
     <h1>Menú de Administración</h1>
     <div class="menu-container">
-        <!-- Botón insertar pregunta -->
         <div>
             <button class="neon-green" onclick="abrirModal('pregunta')">Insertar Pregunta</button>
         </div>
-
-        <!-- Botón insertar categoría -->
         <div>
             <button class="neon-blue" onclick="abrirModal('categoria')">Insertar Categoría</button>
         </div>
-
-        <!-- Botones para activar/desactivar categoría -->
         <div>
             <button class="neon-blue" onclick="abrirModal('activar')">Activar Categoría</button>
             <button class="neon-red" onclick="abrirModal('desactivar')">Desactivar Categoría</button>
@@ -67,8 +62,9 @@
             } else if (accion === 'activar' || accion === 'desactivar') {
                 modalTitle.textContent = accion === 'activar' ? 'Activar Categoría' : 'Desactivar Categoría';
                 modalBody.innerHTML = `
-                    <input type="text" id="modal-categoria" placeholder="Escribir categoría">
+                    <select id="modal-categoria"></select>
                 `;
+                cargarCategorias(accion);
             }
 
             document.getElementById('modal').style.display = 'flex';
@@ -83,24 +79,67 @@
                 const respuestaIncorrecta3 = document.getElementById('respuesta-incorrecta-3').value;
 
                 if (pregunta && respuestaCorrecta && respuestaIncorrecta1 && respuestaIncorrecta2 && respuestaIncorrecta3) {
-                    alert(`Pregunta insertada: ${pregunta}\nRespuesta correcta: ${respuestaCorrecta}\nRespuestas incorrectas: ${respuestaIncorrecta1}, ${respuestaIncorrecta2}, ${respuestaIncorrecta3}`);
+                    fetch('http://localhost/DesarrolloWebF/JS/server.php', {
+                        method: 'POST',
+                        body: new URLSearchParams({
+                            action: 'insertPregunta',
+                            pregunta,
+                            respuestaCorrecta,
+                            respuestaIncorrecta1,
+                            respuestaIncorrecta2,
+                            respuestaIncorrecta3,
+                            categoriaId: document.getElementById('modal-categoria').value
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Pregunta insertada correctamente.');
+                        } else {
+                            alert('Error al insertar la pregunta.');
+                        }
+                    });
                 } else {
                     alert('Por favor, complete todos los campos.');
                 }
             } else if (accionActual === 'categoria') {
                 const categoria = document.getElementById('categoria').value;
                 if (categoria) {
-                    alert(`Categoría insertada: ${categoria}`);
+                    fetch('http://localhost/DesarrolloWebF/JS/server.php', {
+                        method: 'POST',
+                        body: new URLSearchParams({
+                            action: 'insertCategoria',
+                            categoria
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Categoría insertada correctamente.');
+                        } else {
+                            alert('Error al insertar la categoría.');
+                        }
+                    });
                 } else {
                     alert('Por favor, escribe una categoría.');
                 }
             } else if (accionActual === 'activar' || accionActual === 'desactivar') {
-                const categoria = document.getElementById('modal-categoria').value;
-                if (categoria) {
-                    alert(`Categoría ${accionActual}: ${categoria}`);
-                } else {
-                    alert('Por favor, escribe una categoría.');
-                }
+                const categoriaId = document.getElementById('modal-categoria').value;
+                fetch('http://localhost/DesarrolloWebF/JS/server.php', {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        action: accionActual === 'activar' ? 'activarCategoria' : 'desactivarCategoria',
+                        categoriaId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Categoría actualizada correctamente.');
+                    } else {
+                        alert('Error al actualizar la categoría.');
+                    }
+                });
             }
 
             cerrarModal();
@@ -108,6 +147,27 @@
 
         function cerrarModal() {
             document.getElementById('modal').style.display = 'none';
+        }
+
+        function cargarCategorias(accion) {
+            fetch('http://localhost/DesarrolloWebF/JS/server.php', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    action: 'cargarCategorias',
+                    estado: accion === 'activar' ? 0 : 1
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('modal-categoria');
+                select.innerHTML = ''; // Limpiar el contenido anterior
+                data.forEach(categoria => {
+                    const option = document.createElement('option');
+                    option.value = categoria.id;
+                    option.textContent = categoria.name;
+                    select.appendChild(option);
+                });
+            });
         }
     </script>
 </body>
