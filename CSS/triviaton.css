@@ -44,7 +44,7 @@ body {
     padding: 10px;
     width: 80%;
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.9); /* Fondo negro */
+    background-color: rgba(10, 10, 10, 0.9); /* Fondo negro */
     color: #fff;
     border: 2px solid rgba(255, 255, 255, 0.8); /* Borde blanco brillante */
     border-radius: 10px;
@@ -74,7 +74,20 @@ body {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.9); /* Fondo negro */
     color: #fff; /* Texto blanco */
-    border: 2px solid rgba(255, 255, 255, 0.8); /* Borde blanco brillante */
+    border: 2px solid rgba(156, 7, 7, 0.8); /* Borde blanco brillante */
+    border-radius: 10px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Resplandor blanco */
+    transition: all 0.3s ease;
+}
+
+#start-btn {
+    margin-top: 20px;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo negro */
+    color: #fff; /* Texto blanco */
+    border: 2px solid rgba(156, 7, 7, 0.8); /* Borde blanco brillante */
     border-radius: 10px;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Resplandor blanco */
     transition: all 0.3s ease;
