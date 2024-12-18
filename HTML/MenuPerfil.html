@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,41 +13,22 @@
             <!-- Imagen del perfil -->
             <img id="profile-photo" src="https://via.placeholder.com/150" alt="Foto de Perfil">
             
-            <!-- Botón estilizado -->
+            <!-- Botón estilizado para cambiar la imagen -->
             <label for="photo-upload" class="file-upload-label">Cambiar imagen de perfil</label>
             <input type="file" id="photo-upload" accept="image/*" onchange="changePhoto()">
         </div>
 
         <div class="profile-info">
-            <h3 id="user-name">Pepito Suárez</h3>
-            
-            <div class="stats">
-                <p>Partidas Totales: <span id="total-games">0</span></p>
-                <p>Puntuación Total: <span id="total-score">0</span></p>
-            </div>
+            <!-- Aquí se mostrarán los datos del perfil -->
+            <h3 id="user-name">Cargando...</h3>
+            <h3 id="correo">Cargando...</h3>
+            <h3 id="rol">Cargando...</h3>
         </div>
         
         <!-- Botón de salir -->
         <button class="logout-button" onclick="logout()">Confirmar y salir</button>
     </div>
 
-    <script>
-        function logout() {
-            window.location.href = "login.html"; // Cambia 'login.html' por tu página de destino
-        }
-
-        function changePhoto() {
-            const fileInput = document.getElementById('photo-upload');
-            const profilePhoto = document.getElementById('profile-photo');
-            const file = fileInput.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    profilePhoto.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-    </script>
+    <script src="../JS/Profile.js"></script>
 </body>
 </html>

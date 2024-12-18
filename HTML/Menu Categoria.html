@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú con Neon y Modal</title>
+    <title>Menú de administración</title>
     <link rel="stylesheet" href="../CSS/StyleAdmin.css">
 </head>
 <body>
-    <h1>Menú de Administración</h1>
+    <h1>Menú de administración</h1>
     <div class="menu-container">
         <div>
             <button class="neon-green" onclick="abrirModal('pregunta')">Insertar Pregunta</button>
@@ -17,6 +17,8 @@
         </div>
         <div>
             <button class="neon-blue" onclick="abrirModal('activar')">Activar Categoría</button>
+        </div>
+        <div>
             <button class="neon-red" onclick="abrirModal('desactivar')">Desactivar Categoría</button>
         </div>
     </div>
@@ -53,7 +55,10 @@
                     <input type="text" id="respuesta-incorrecta-2" placeholder="Escribir respuesta incorrecta 2">
                     <br>
                     <input type="text" id="respuesta-incorrecta-3" placeholder="Escribir respuesta incorrecta 3">
+                    <br>
+                    <select id="modal-categoria"></select>
                 `;
+                cargarCategorias('activar'); // Asegurarnos de cargar categorías activas
             } else if (accion === 'categoria') {
                 modalTitle.textContent = 'Insertar Categoría';
                 modalBody.innerHTML = `
@@ -64,7 +69,7 @@
                 modalBody.innerHTML = `
                     <select id="modal-categoria"></select>
                 `;
-                cargarCategorias(accion);
+                cargarCategorias(accion); // Cargar categorías activas o inactivas
             }
 
             document.getElementById('modal').style.display = 'flex';
@@ -150,11 +155,13 @@
         }
 
         function cargarCategorias(accion) {
+            // Cambié la lógica del estado aquí para asegurar que sea correcto
+            const estado = accion === 'activar' ? 1 : 0;  // Si es 'activar', buscar categorías activas (estado=1), si es 'desactivar', inactivas (estado=0)
             fetch('http://localhost/DesarrolloWebF/JS/server.php', {
                 method: 'POST',
                 body: new URLSearchParams({
                     action: 'cargarCategorias',
-                    estado: accion === 'activar' ? 0 : 1
+                    estado: estado
                 })
             })
             .then(response => response.json())

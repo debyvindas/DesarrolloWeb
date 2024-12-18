@@ -16,21 +16,26 @@ if ($request == 'POST') {
     if ($action == 'login') {
         $correo = $_POST['correo'];
         $password = $_POST['password'];
-
-        $sql = "SELECT * FROM usuario WHERE Correo = ? AND Pass = ?";
+    
+        $sql = "SELECT Nombre, Correo, ID_Rol FROM usuario WHERE Correo = ? AND Pass = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ss', $correo, $password);
         $stmt->execute();
         $result = $stmt->get_result();
-
+    
         if ($result->num_rows > 0) {
-            echo json_encode(["success" => true, "message" => "Inicio de sesión exitoso."]);
+            $user = $result->fetch_assoc();
+            echo json_encode([
+                "success" => true,
+                "nombre" => $user['Nombre'],
+                "correo" => $user['Correo'],
+                "rol" => $user['ID_Rol']
+            ]);
         } else {
             echo json_encode(["success" => false, "message" => "Credenciales incorrectas."]);
         }
-
         $conn->close();
-    } 
+    }
     elseif ($action == 'insertPregunta') {
         $pregunta = $_POST['pregunta'];
         $respuestaCorrecta = $_POST['respuestaCorrecta'];
@@ -100,20 +105,21 @@ if ($request == 'POST') {
         echo json_encode(["success" => true]);
     }
     elseif ($action == 'cargarCategorias') {
-        $estado = $_POST['estado'];
+        $estado = $_POST['estado'];  // Estado 1 para activas, 0 para inactivas
         $sql = "SELECT ID_Categoria AS id, Nombre AS name FROM Categoria WHERE Activo = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('i', $estado);
         $stmt->execute();
         $result = $stmt->get_result();
-
+    
         $categorias = [];
         while ($row = $result->fetch_assoc()) {
             $categorias[] = $row;
         }
-
+    
         echo json_encode($categorias);
     }
+    
     elseif ($action == 'activarCategoria' || $action == 'desactivarCategoria') {
         $categoriaId = $_POST['categoriaId'];
         $estado = $action == 'activarCategoria' ? 1 : 0;
@@ -121,9 +127,10 @@ if ($request == 'POST') {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ii', $estado, $categoriaId);
         $stmt->execute();
-
+    
         echo json_encode(["success" => true]);
     }
+    
     elseif ($action == 'QuestionN') {
         $categoryId = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
     
@@ -264,7 +271,30 @@ if ($request == 'POST') {
         echo json_encode($questions, JSON_PRETTY_PRINT);
         $conn->close();
     }
-    
+    if ($action == 'getProfileData') {
+    $correo = $_POST['correo'];
+
+    $sql = "SELECT Nombre, Correo, ID_Rol FROM usuario WHERE Correo = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('s', $correo);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc(); // Obtener los datos del usuario
+        echo json_encode([
+            "success" => true,
+            "nombre" => $user['Nombre'],
+            "correo" => $user['Correo'],
+            "rol" => $user['ID_Rol']
+        ]);
+    } else {
+        echo json_encode(["success" => false, "message" => "Usuario no encontrado."]);
+    }
+
+    $conn->close();
+}
+
     
     
     elseif ($action == 'Category'){
@@ -287,40 +317,40 @@ if ($request == 'POST') {
             echo json_encode(['error' => 'Error en la consulta']); // Si hubo un error
         }
     }
-    elseif ($action == 'register') {
-        // Recoger los datos del formulario de registro
+    elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'register') {
         $nombre = $_POST['nombre'];
         $correo = $_POST['correo'];
-        $password = $_POST['password'];
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hashear la contraseña por seguridad
     
-        // Validar si el correo ya existe en la base de datos
-        $sqlCheckCorreo = "SELECT * FROM Usuario WHERE Correo = ?";
-        $stmtCheck = $conn->prepare($sqlCheckCorreo);
-        $stmtCheck->bind_param('s', $correo);
-        $stmtCheck->execute();
-        $resultCheck = $stmtCheck->get_result();
-    
-        if ($resultCheck->num_rows > 0) {
-            // El correo ya existe
+        // Verificar si el correo ya existe en la base de datos
+        $sql_check = "SELECT * FROM Usuario WHERE Correo = ?";
+        $stmt = $conn->prepare($sql_check);
+        $stmt->bind_param("s", $correo);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            // Si el correo ya está registrado
             echo json_encode(["success" => false, "message" => "El correo ya está registrado."]);
-        } else {
-            // Obtener el último ID_Usuario insertado
-            $sqlUltimoId = "SELECT MAX(ID_Usuario) AS ultimo_id FROM Usuario";
-            $resultUltimoId = $conn->query($sqlUltimoId);
-            $rowUltimoId = $resultUltimoId->fetch_assoc();
-            $nuevoIdUsuario = $rowUltimoId['ultimo_id'] + 1;  // Incrementar el ID manualmente
-    
-            // Insertar el nuevo usuario en la base de datos
-            $sqlInsertUsuario = "INSERT INTO Usuario (ID_Usuario, ID_Rol, Nombre, Correo, Pass, Partidas_Jugadas, Dif_1, Dif_2, Dif_3, Res_H, Pun_T)
-                                 VALUES (?, 1, ?, ?, ?, 0, 0, 0, 0, 0, 0)";
-            $stmtInsert = $conn->prepare($sqlInsertUsuario);
-            $stmtInsert->bind_param('isss', $nuevoIdUsuario, $nombre, $correo, $password);
-            $stmtInsert->execute();
-    
-            echo json_encode(["success" => true, "message" => "Registro exitoso."]);
+            exit();
         }
     
-        $conn->close();
+        // Obtener el último ID de usuario y calcular el siguiente
+        $sql_max_id = "SELECT MAX(ID_Usuario) AS max_id FROM Usuario";
+        $result_max_id = $conn->query($sql_max_id);
+        $row = $result_max_id->fetch_assoc();
+        $next_id = $row['max_id'] + 1;
+    
+        // Insertar el nuevo usuario con el rol 2
+        $sql_insert = "INSERT INTO Usuario (ID_Usuario, ID_Rol, Nombre, Correo, Pass) VALUES (?, 2, ?, ?, ?)";
+        $stmt = $conn->prepare($sql_insert);
+        $stmt->bind_param("isss", $next_id, $nombre, $correo, $password);
+    
+        if ($stmt->execute()) {
+            echo json_encode(["success" => true, "message" => "Usuario registrado exitosamente."]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Hubo un error al registrar al usuario."]);
+        }
     }
     
  } else {

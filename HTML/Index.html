@@ -10,7 +10,6 @@
     <h1>TRIVIA TIME!</h1>
     <audio id="backgroundMusic" autoplay loop muted>
         <source src="../musikita/MANDALORIAN.mp3" type="audio/mp3">
-        
     </audio>
     <div class="salchicha">
         <h3>Modos de juego:</h3>
@@ -19,12 +18,21 @@
         <button onclick="NormalMode()">Modo Clásico</button>
         <button onclick="redirectToTriviaton()">Triviaton</button>
         <button onclick="redirectToPvP()">Player VS Player</button>
+        <button onclick="AdminOpen()">Administración</button>
+        <button onclick="PerfilOpen()">Perfil</button>
     </div>
-    <button class="music-button" id="musicButton">Play Music</button>
 
-    <script src="../JS/Generate_Ques.js"></script>
     <script>
-        
+        document.addEventListener('DOMContentLoaded', function () {
+            const adminButton = document.querySelector('button[onclick="AdminOpen()"]');
+            const rol = localStorage.getItem('rol');
+
+            // Habilitar botón de administración solo si el rol es de administrador
+            if (rol !== '1') {
+                adminButton.style.display = 'none';
+            }
+        });
+
         function redirectToPvP() {
             window.location.href = 'PvP.html';
         }
@@ -33,6 +41,13 @@
         }
         function NormalMode() {
             window.location.href = 'NormalMode.html';
+        }
+        function AdminOpen() {
+            window.location.href = 'Menu Categoria.html';
+            // Aquí puedes redirigir a otra página o habilitar una función adicional
+        }
+        function PerfilOpen() {
+            window.location.href = 'MenuPerfil.html';
         }
     </script>
 </body>
