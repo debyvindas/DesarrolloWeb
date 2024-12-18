@@ -1,4 +1,7 @@
+/* Importación de fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap');
 
+/* Reset básico */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,11 +9,11 @@
 }
 
 body {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #000;
-    color: #fff;
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,80 +21,87 @@ body {
     text-align: center;
 }
 
+/* Contenedor principal */
 .container {
     max-width: 700px;
     padding: 20px;
-    background: #111;
+    background: #111; /* Negro claro */
     border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); /* Sombra blanca suave */
 }
 
+/* Título principal */
 h1 {
+    font-family: 'Orbitron', sans-serif;
     font-size: 3rem;
-    color: #00ffff;
+    color: #fff; /* Blanco puro */
     margin-bottom: 20px;
-    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff; /* Efecto neón blanco */
 }
 
+/* Subtítulos */
 h2 {
+    font-family: 'Poppins', sans-serif;
     font-size: 1.5rem;
-    color: #ffffff;
+    color: #fff;
     margin-bottom: 20px;
-    text-shadow: 0 0 5px #00ffff;
+    text-shadow: 0 0 5px #fff;
 }
 
+/* Botones */
 button {
     background: none;
-    border: 2px solid #00ffff;
-    color: #00ffff;
+    border: 2px solid #fff; /* Borde blanco */
+    color: #fff; /* Texto blanco */
     padding: 10px 15px;
     font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
     border-radius: 8px;
     cursor: pointer;
     margin: 10px 0;
-    transition: 0.3s;
-    text-shadow: 0 0 5px #00ffff;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px #fff; /* Sombra blanca */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
 }
 
 button:hover {
-    background: #00ffff;
-    color: #000;
+    background: #fff; /* Fondo blanco */
+    color: #000; /* Texto negro */
+    box-shadow: 0 0 15px #fff;
     text-shadow: none;
-    box-shadow: 0 0 15px #00ffff;
 }
 
-#game.hide, #score.hide, #category-selection.hide {
-    display: none;
-}
-
+/* Sección de botones de respuestas */
 #answers button {
     display: block;
     margin: 10px auto;
     width: 80%;
 }
 
+/* Feedback de respuestas */
 .feedback {
     margin-top: 15px;
     font-size: 1.2rem;
-    color: #ffffff;
-    text-shadow: 0 0 5px #00ffff;
+    color: #fff;
+    text-shadow: 0 0 5px #fff;
 }
 
 .feedback.correct {
-    color: #00ff00;
+    color: #00ff00; /* Verde para correctas */
     text-shadow: 0 0 5px #00ff00;
 }
 
 .feedback.incorrect {
-    color: #ff0000;
+    color: #ff0000; /* Rojo para incorrectas */
     text-shadow: 0 0 5px #ff0000;
 }
 
+/* Botón de perfil */
 .profile-button img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    box-shadow: 0px 0px 5px #00ffff;
+    box-shadow: 0px 0px 5px #fff; /* Sombra blanca */
     transition: transform 0.2s ease;
     cursor: pointer;
     position: absolute;
@@ -101,8 +111,14 @@ button:hover {
 
 .profile-button img:hover {
     transform: scale(1.1);
-    box-shadow: 0px 0px 10px #00ffff;
+    box-shadow: 0px 0px 10px #fff;
 }
+
+/* Clases de ocultar secciones */
+#game.hide, #score.hide, #category-selection.hide {
+    display: none;
+}
+
 
 /*
 * {
