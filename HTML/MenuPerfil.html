@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="profile-container">
-        <h1>Perfil de Usuario</h1>
+        <h1>Mi información</h1>
         <div class="profile-photo-container">
             <!-- Imagen del perfil -->
             <img id="profile-photo" src="https://via.placeholder.com/150" alt="Foto de Perfil">
@@ -19,21 +19,23 @@
         </div>
 
         <div class="profile-info">
-            <h3 id="user-name">Pepito suarez</h3>
+            <h3 id="user-name">Pepito Suárez</h3>
             <p id="user-email">pepito@ejemplo.com</p>
             <div class="stats">
                 <p>Partidas Totales: <span id="total-games">0</span></p>
                 <p>Puntuación Total: <span id="total-score">0</span></p>
             </div>
         </div>
-            <!-- Botón de salir -->
-    <button class="logout-button" onclick="logout()">Salir</button>
+        
+        <!-- Botón de salir -->
+        <button class="logout-button" onclick="logout()">Confirmar y salir</button>
     </div>
 
     <script>
         function logout() {
             window.location.href = "login.html"; // Cambia 'login.html' por tu página de destino
         }
+
         function changePhoto() {
             const fileInput = document.getElementById('photo-upload');
             const profilePhoto = document.getElementById('profile-photo');

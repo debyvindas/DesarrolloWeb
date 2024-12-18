@@ -1,34 +1,129 @@
+/* Importación de fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap');
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco */
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .container {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 100vh;
-    margin: 0;
+    width: 90%;
+    height: 90vh;
 }
 
+/* Panel de jugadores */
 .player-panel {
-    width: 20%;
+    width: 25%;
     text-align: center;
+    background: #111; /* Negro claro */
+    padding: 1em;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #fff; /* Efecto sombra blanco */
 }
 
+.player-panel h2 {
+    font-size: 1.8em;
+    color: #fff;
+    margin-bottom: 0.5em;
+}
+
+#player-one-streak, #player-two-streak {
+    font-size: 2em;
+    font-weight: bold;
+    color: #fff; /* Texto blanco */
+    background-color: #000; /* Fondo negro */
+    padding: 0.5em;
+    border-radius: 8px;
+    box-shadow: 0 0 8px #fff; /* Sombra blanca */
+}
+
+/* Área principal del juego */
 #main-game {
     flex: 1;
     text-align: center;
-    padding: 1em;
+    padding: 2em;
+    position: relative;
 }
 
-h1 {
-    margin-bottom: 1em;
+/* Cuadro negro detrás de las instrucciones */
+#question {
+    font-size: 1.5em;
+    color: #fff; /* Texto blanco */
+    margin: 1.5em auto;
+    padding: 1em; /* Espaciado interno */
+    background-color: #000; /* Fondo negro */
+    border-radius: 15px; /* Bordes redondos */
+    display: inline-block; /* Tamaño ajustado al contenido */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8); /* Sombra negra difuminada */
+    max-width: 80%; /* Limita el ancho */
 }
 
+/* Título del juego (Trivia Time!) */
+#main-game h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2em; /* Más pequeño */
+    color: #fff; /* Blanco */
+    text-shadow: 0 0 8px #fff; /* Sombra blanca */
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Turno del jugador */
+#turn-message {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5em; /* Mucho más grande */
+    color: #fff; /* Texto blanco */
+    text-shadow: 0 0 10px #fff; /* Sombra blanca */
+    margin-top: 1em;
+    font-weight: bold;
+}
+
+/* Pregunta */
+#question {
+    font-size: 1.5em;
+    color: #fff; /* Texto blanco */
+    margin: 1.5em 0;
+}
+
+/* Botones */
 button {
-    margin-top: 1em;
-    padding: 0.5em 1em;
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco */
+    border: 2px solid #fff; /* Borde blanco */
+    padding: 0.75em 1.5em;
     font-size: 1em;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #fff; /* Sombra blanca */
     cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.3s;
 }
 
+button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #fff; /* Sombra más intensa */
+}
+
+/* Respuestas */
 #answers {
-    margin-top: 1em;
+    margin-top: 1.5em;
+    font-size: 1.2em;
+    color: #fff; /* Texto blanco */
 }

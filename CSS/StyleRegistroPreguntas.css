@@ -1,0 +1,102 @@
+/* Importación de fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap');
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('https://th.bing.com/th/id/R.fa5409ce37c403e30b32eb56316cab99?rik=ksKpOunST%2bYvTw&pid=ImgRaw&r=0');
+    background-size: cover;
+    background-position: center;
+    color: #fff; /* Texto blanco */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 20px;
+}
+
+div {
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo negro opaco */
+    border-radius: 12px;
+    padding: 30px 20px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Título principal con efecto neón */
+header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2em;
+    color: #000000;
+    margin-bottom: 20px;
+    text-shadow: 
+        0 0 5px #fff,  /* Sombra suave */
+        0 0 10px #fff, /* Sombra intermedia */
+        0 0 20px #fff; /* Efecto neón más intenso */
+}
+
+/* Estilo para etiquetas */
+label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px;
+    color: #fff;
+}
+
+/* Estilo para inputs */
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #222; /* Gris oscuro */
+    border: 1px solid #444; /* Borde gris */
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #fff; /* Borde blanco al enfocar */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Efecto hover para inputs */
+input[type="text"]:hover {
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+/* Botón estilizado para "Agregar Pregunta" */
+button {
+    width: 50%;
+    padding: 10px;
+    font-size: 1em;
+    font-family: 'Poppins', sans-serif;
+    color: #fff; /* Texto blanco */
+    background-color: #000; /* Fondo negro */
+    border: 2px solid #fff; /* Borde blanco */
+    border-radius: 8px;
+    cursor: pointer;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    margin-top: 15px; /* Espaciado superior */
+}
+
+button:hover {
+    background-color: #fff; /* Fondo blanco al pasar el cursor */
+    color: #000; /* Texto negro */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
