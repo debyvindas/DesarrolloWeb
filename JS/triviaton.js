@@ -57,13 +57,27 @@ function loadQuestion() {
     const answersDiv = document.getElementById("answers");
     answersDiv.innerHTML = ""; // Limpiar respuestas anteriores
 
-    questionData.answers.forEach(answerObj => {
+    // Mezclar las respuestas antes de mostrarlas
+    const shuffledAnswers = shuffleArray(questionData.answers);
+
+    // Mostrar las respuestas mezcladas
+    shuffledAnswers.forEach(answerObj => {
         const button = document.createElement("button");
         button.innerText = answerObj.text; // Mostrar el texto de la respuesta
         button.onclick = () => checkAnswer(answerObj.correct); // Verificar si la respuesta es correcta
         answersDiv.appendChild(button);
     });
 }
+
+// Función para mezclar las respuestas (Fisher-Yates shuffle)
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));  // Elegir un índice aleatorio
+        [array[i], array[j]] = [array[j], array[i]];    // Intercambiar los elementos
+    }
+    return array;
+}
+
 
 function checkAnswer(isCorrect) {
     if (isCorrect) {

@@ -65,7 +65,11 @@ function showQuestion() {
     questionElement.textContent = questionData.question;
     answersElement.innerHTML = '';
 
-    questionData.answers.forEach(answer => {
+    // Mezclar las respuestas de manera aleatoria
+    const shuffledAnswers = shuffleArray(questionData.answers);
+
+    // Crear los botones con las respuestas mezcladas
+    shuffledAnswers.forEach(answer => {
         const button = document.createElement('button');
         button.textContent = answer.text;
         button.onclick = () => selectAnswer(button, answer.correct);  // Pasar el botón y la respuesta correcta
@@ -74,7 +78,13 @@ function showQuestion() {
 
     startTimer();
 }
-
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));  // Elegir un índice aleatorio
+        [array[i], array[j]] = [array[j], array[i]];    // Intercambiar los elementos
+    }
+    return array;
+}
 function selectAnswer(button, isCorrect) {
     clearInterval(timerInterval);
 
