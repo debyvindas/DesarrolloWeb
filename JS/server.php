@@ -237,26 +237,24 @@ if ($request == 'POST') {
         echo json_encode($questionsArray, JSON_PRETTY_PRINT);
         $conn->close();
     }
-    
     elseif ($action == 'PvP') {
+        // Consulta para obtener todas las preguntas activas y sus respuestas
         $query = "
             SELECT p.ID_Pregunta, p.TXT AS question, r.ID_Respuesta, r.TXT AS answer, r.Correcta
             FROM Pregunta p
-            INNER JOIN Respuestas r ON p.ID_Pregunta = r.ID_Pregunta
+            LEFT JOIN Respuestas r ON p.ID_Pregunta = r.ID_Pregunta
             WHERE p.Activo = 1
-            ORDER BY RAND()
-            LIMIT 16
         ";
     
         $result = $conn->query($query);
     
-        $questions = [];
-        
+        $questions = []; // Arreglo para almacenar preguntas
+    
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $questionId = $row['ID_Pregunta'];
     
-                // Si la pregunta aún no está en el arreglo, la agregamos
+                // Si la pregunta aún no está en el arreglo, agregarla
                 if (!isset($questions[$questionId])) {
                     $questions[$questionId] = [
                         'question' => $row['question'],
@@ -264,20 +262,44 @@ if ($request == 'POST') {
                     ];
                 }
     
-                // Añadir respuestas a la pregunta correspondiente
+                // Agregar la respuesta a la pregunta correspondiente
                 $questions[$questionId]['answers'][] = [
                     'text' => $row['answer'],
-                    'correct' => $row['Correcta'] === 'Si'
+                    'correct' => $row['Correcta'] === 'yes'
                 ];
             }
         }
     
-        // Reindexar preguntas
-        $questions = array_values($questions);
+        // Asegurarse de que cada pregunta tenga 4 respuestas
+        foreach ($questions as &$question) {
+            // Verificamos cuántas respuestas tiene la pregunta
+            $missingAnswers = 4 - count($question['answers']);
+            
+            // Si faltan respuestas, agregamos respuestas vacías
+            if ($missingAnswers > 0) {
+                for ($i = 0; $i < $missingAnswers; $i++) {
+                    $question['answers'][] = [
+                        'text' => '', // Respuesta vacía
+                        'correct' => false // Respuesta incorrecta
+                    ];
+                }
+            }
+        }
     
-        // Enviar preguntas en formato JSON
+        // Convertir las preguntas a un array indexado
+        $questionsArray = array_values($questions);
+    
+        // Barajar preguntas aleatoriamente
+        shuffle($questionsArray); 
+    
+        // Para cada pregunta, barajamos las respuestas
+        foreach ($questionsArray as &$question) {
+            shuffle($question['answers']); // Barajar las respuestas de cada pregunta
+        }
+    
+        // Respuesta en formato JSON
         header('Content-Type: application/json');
-        echo json_encode($questions, JSON_PRETTY_PRINT);
+        echo json_encode($questionsArray, JSON_PRETTY_PRINT);
         $conn->close();
     }
     if ($action == 'getProfileData') {
