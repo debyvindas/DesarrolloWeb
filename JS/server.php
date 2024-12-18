@@ -184,14 +184,14 @@ if ($request == 'POST') {
         $conn->close();
     }
     elseif ($action == 'Triviaton') {
-        // Consulta para obtener todas las preguntas activas
+        // Consulta para obtener todas las preguntas activas y sus respuestas
         $query = "
             SELECT p.ID_Pregunta, p.TXT AS question, r.ID_Respuesta, r.TXT AS answer, r.Correcta
             FROM Pregunta p
-            INNER JOIN Respuestas r ON p.ID_Pregunta = r.ID_Pregunta
+            LEFT JOIN Respuestas r ON p.ID_Pregunta = r.ID_Pregunta
             WHERE p.Activo = 1
         ";
-        
+    
         $result = $conn->query($query);
     
         $questions = []; // Arreglo para almacenar preguntas
@@ -216,19 +216,28 @@ if ($request == 'POST') {
             }
         }
     
+        // Asegurarse de que cada pregunta tenga 4 respuestas
+        foreach ($questions as &$question) {
+            // Si la pregunta tiene menos de 4 respuestas, agregar respuestas incorrectas vacías
+            $missingAnswers = 4 - count($question['answers']);
+            for ($i = 0; $i < $missingAnswers; $i++) {
+                $question['answers'][] = [
+                    'text' => '', // Respuesta vacía
+                    'correct' => false // Respuesta incorrecta
+                ];
+            }
+        }
+    
         // Convertir las preguntas a un array indexado y barajarlas
         $questionsArray = array_values($questions);
         shuffle($questionsArray); // Barajar preguntas aleatoriamente
-    
-        // Limitar el número de preguntas a un máximo de 30
-        $maxQuestions = 30;
-        $questionsArray = array_slice($questionsArray, 0, $maxQuestions);
     
         // Respuesta en formato JSON
         header('Content-Type: application/json');
         echo json_encode($questionsArray, JSON_PRETTY_PRINT);
         $conn->close();
     }
+    
     elseif ($action == 'PvP') {
         $query = "
             SELECT p.ID_Pregunta, p.TXT AS question, r.ID_Respuesta, r.TXT AS answer, r.Correcta
@@ -320,7 +329,7 @@ if ($request == 'POST') {
     elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'register') {
         $nombre = $_POST['nombre'];
         $correo = $_POST['correo'];
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hashear la contraseña por seguridad
+        $password = $_POST['password']; // Hashear la contraseña por seguridad
     
         // Verificar si el correo ya existe en la base de datos
         $sql_check = "SELECT * FROM Usuario WHERE Correo = ?";

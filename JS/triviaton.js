@@ -39,6 +39,7 @@ function fetchQuestions() {
             }
 
             questions = serverQuestions; // Almacenar preguntas obtenidas
+            console.log(questions);
             loadQuestion(); // Cargar la primera pregunta
         })
         .catch(error => {
