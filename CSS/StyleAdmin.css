@@ -1,72 +1,77 @@
+/* Importación de fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap');
 
-*
-
-body {
+/* Reset básico */
+* {
     margin: 0;
     padding: 0;
-    background-color: #000;
-    color: #fff;
-    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
 }
 
 h1 {
-    text-align: center;
-    margin-top: 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3em; /* Título más grande */
+    margin-bottom: 30px;
+    color: #000000;
+    text-shadow: 
+        0 0 5px #fff, 
+        0 0 10px #fff, 
+        0 0 15px #fff; /* Efecto neón blanco */
 }
 
 /* Contenedor principal */
 .menu-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Botones en columna */
     align-items: center;
-    justify-content: center;
-    height: 100vh;
+    gap: 20px; /* Espaciado uniforme */
+    width: 100%;
+    max-width: 400px; /* Ancho máximo del contenedor */
+    margin: 0 auto;
 }
 
-/* Botones neon */
+.menu-container div {
+    width: 100%; /* Ancho igual para los botones */
+}
+
+/* Botones con efecto neón blanco */
 button {
     background: none;
-    border: 2px solid;
-    color: #fff;
-    padding: 10px 20px;
-    margin: 10px;
-    font-size: 16px;
+    border: 2px solid #fff; /* Borde blanco */
+    color: #fff; /* Texto blanco */
+    padding: 15px 0; /* Espaciado interno vertical */
+    font-size: 1.1em;
+    width: 100%; /* Ancho completo del contenedor */
+    height: 50px; /* Altura uniforme */
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 10px;
     text-transform: uppercase;
     transition: all 0.3s ease;
-}
-
-button.neon-green {
-    border-color: #39ff14;
-    box-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14, 0 0 15px #39ff14;
-}
-
-button.neon-blue {
-    border-color: #00bfff;
-    box-shadow: 0 0 5px #00bfff, 0 0 10px #00bfff, 0 0 15px #00bfff;
-}
-
-button.neon-red {
-    border-color: #ff073a;
-    box-shadow: 0 0 5px #ff073a, 0 0 10px #ff073a, 0 0 15px #ff073a;
+    box-shadow: 
+        0 0 5px #fff, 
+        0 0 10px #fff; /* Efecto neón blanco */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 button:hover {
     background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Inputs */
-input[type="text"] {
-    width: 300px;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-    color: #000;
+    box-shadow: 
+        0 0 8px #fff, 
+        0 0 15px #fff; /* Efecto más intenso al pasar el mouse */
 }
 
 /* Modal */
@@ -77,19 +82,51 @@ input[type="text"] {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9); /* Fondo oscuro */
     justify-content: center;
     align-items: center;
+    z-index: 10;
 }
 
 .modal-content {
-    background: #222;
+    background: #111; /* Negro oscuro */
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0 0 10px #00bfff;
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff; /* Efecto neón blanco */
 }
 
+.modal-content h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #000000;
+    text-shadow: 
+        0 0 5px #fff, 
+        0 0 10px #fff, 
+        0 0 15px #fff; /* Efecto neón blanco */
+}
+
+/* Inputs */
+.modal-content input[type="text"], .modal-content select {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    outline: none;
+    color: #000;
+    background-color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+.modal-content input[type="text"]:focus, .modal-content select:focus {
+    box-shadow: 0 0 10px #fff;
+}
+
+/* Botones dentro del modal */
 .modal-content button {
     margin-top: 10px;
+    font-size: 1em;
+    padding: 10px 20px;
 }
