@@ -65,7 +65,7 @@ if ($request == 'POST') {
     
         // Insertar las respuestas con los nuevos ID_Respuesta
         $respuestas = [
-            [$respuestaCorrecta, 'yes'],
+            [$respuestaCorrecta, 'Si'],
             [$respuestaIncorrecta1, 'no'],
             [$respuestaIncorrecta2, 'no'],
             [$respuestaIncorrecta3, 'no']
@@ -168,7 +168,7 @@ if ($request == 'POST') {
                 
                 $questionsByCategory[$category][$questionId]['answers'][] = [
                     'text' => $row['answer'],
-                    'correct' => $row['Correcta'] === 'Si' || 'yes'
+                    'correct' => in_array(strtolower($row['Correcta']), ['si', 'yes']) 
                 ];
             }
         }
@@ -211,8 +211,9 @@ if ($request == 'POST') {
                 // Agregar las respuestas a la pregunta correspondiente
                 $questions[$questionId]['answers'][] = [
                     'text' => $row['answer'],
-                    'correct' => $row['Correcta'] === 'Si'
+                    'correct' => in_array(strtolower($row['Correcta']), ['si', 'yes'])  // Acepta 'Si' y 'yes' (ignorando mayúsculas/minúsculas)
                 ];
+                
             }
         }
     
@@ -265,8 +266,9 @@ if ($request == 'POST') {
                 // Agregar la respuesta a la pregunta correspondiente
                 $questions[$questionId]['answers'][] = [
                     'text' => $row['answer'],
-                    'correct' => $row['Correcta'] === 'Si'
+                    'correct' => in_array(strtolower($row['Correcta']), ['si', 'yes'])
                 ];
+                
             }
         }
     
@@ -303,7 +305,11 @@ if ($request == 'POST') {
         $conn->close();
     }
         elseif ($action == 'getProfileData') {
-        $correo = $_POST['correo1'];
+        $correo = $_POST['correo1']?? '';
+        if (empty($correo)) {
+            echo json_encode(["success" => false, "message" => "El correo es requerido."]);
+            exit;
+        }
         $sql_check2 = "SELECT Nombre, Correo, ID_Rol FROM usuario WHERE Correo = ?";
         $stmt = $conn->prepare($sql_check2);
         $stmt->bind_param("s", $correo);
