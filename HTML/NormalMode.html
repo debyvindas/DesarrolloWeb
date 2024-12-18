@@ -1,182 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú de administración</title>
-    <link rel="stylesheet" href="../CSS/StyleAdmin.css">
+    <link rel="stylesheet" href="../CSS/StylesClasica.css">
+    <title>Trivia</title>
 </head>
 <body>
-    <h1>Menú de administración</h1>
-    <div class="menu-container">
-        <div>
-            <button class="neon-green" onclick="abrirModal('pregunta')">Insertar Pregunta</button>
-        </div>
-        <div>
-            <button class="neon-blue" onclick="abrirModal('categoria')">Insertar Categoría</button>
-        </div>
-        <div>
-            <button class="neon-blue" onclick="abrirModal('activar')">Activar Categoría</button>
-            
-        </div>
-        <div>
-            <button class="neon-red" onclick="abrirModal('desactivar')">Desactivar Categoría</button>
-        </div>
-    </div>
+    <div class="container">
+        <header>
+            <h1>TriviaTime!</h1>
+        </header>
 
-    <!-- Modal -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <h2 id="modal-title">Modal</h2>
-            <div id="modal-body">
-                <!-- Contenido del modal generado dinámicamente -->
-            </div>
-            <button class="neon-blue" onclick="procesarModal()">Confirmar</button>
-            <button class="neon-red" onclick="cerrarModal()">Cerrar</button>
-        </div>
-    </div>
+        <main>
+            <!-- Selección de categoría -->
+            <section id="category-selection">
+                <h2>Selecciona una categoría</h2>
+                <div id="categories-container">
+                    <!-- Las categorías se cargarán dinámicamente -->
+                </div>
+            </section>
 
+            <!-- Juego de trivia -->
+            <section id="game" class="hide">
+                <div id="question-container">
+                    <h2 id="question">Pregunta</h2>
+                    <div id="timer">Tiempo restante: <span id="time-left">10</span> segundos</div>
+                    <div id="answers"></div>
+                    <div id="feedback" class="feedback"></div>
+                </div>
+            </section>
+
+            <!-- Sección de puntuación -->
+            <section id="score" class="hide">
+                <h2>Juego terminado</h2>
+                <p>Tu puntuación final es: <span id="final-score"></span></p>
+                <button id="restart-btn" onclick="restartGame()">Reiniciar</button>
+            </section>
+        </main>
+    </div>
+    <script src="../JS/Generate_Ques.js"></script>
     <script>
-        let accionActual = '';
-
-        function abrirModal(accion) {
-            accionActual = accion;
-            const modalTitle = document.getElementById('modal-title');
-            const modalBody = document.getElementById('modal-body');
-
-            if (accion === 'pregunta') {
-                modalTitle.textContent = 'Insertar Pregunta';
-                modalBody.innerHTML = `
-                    <input type="text" id="pregunta" placeholder="Escribir pregunta">
-                    <br>
-                    <input type="text" id="respuesta-correcta" placeholder="Escribir respuesta correcta">
-                    <br>
-                    <input type="text" id="respuesta-incorrecta-1" placeholder="Escribir respuesta incorrecta 1">
-                    <br>
-                    <input type="text" id="respuesta-incorrecta-2" placeholder="Escribir respuesta incorrecta 2">
-                    <br>
-                    <input type="text" id="respuesta-incorrecta-3" placeholder="Escribir respuesta incorrecta 3">
-                    <br>
-                    <select id="modal-categoria"></select>
-                `;
-                cargarCategorias('activar'); // Asegurarnos de cargar categorías activas
-            } else if (accion === 'categoria') {
-                modalTitle.textContent = 'Insertar Categoría';
-                modalBody.innerHTML = `
-                    <input type="text" id="categoria" placeholder="Escribir categoría">
-                `;
-            } else if (accion === 'activar' || accion === 'desactivar') {
-                modalTitle.textContent = accion === 'activar' ? 'Activar Categoría' : 'Desactivar Categoría';
-                modalBody.innerHTML = `
-                    <select id="modal-categoria"></select>
-                `;
-                cargarCategorias(accion); // Cargar categorías activas o inactivas
-            }
-
-            document.getElementById('modal').style.display = 'flex';
-        }
-
-        function procesarModal() {
-            if (accionActual === 'pregunta') {
-                const pregunta = document.getElementById('pregunta').value;
-                const respuestaCorrecta = document.getElementById('respuesta-correcta').value;
-                const respuestaIncorrecta1 = document.getElementById('respuesta-incorrecta-1').value;
-                const respuestaIncorrecta2 = document.getElementById('respuesta-incorrecta-2').value;
-                const respuestaIncorrecta3 = document.getElementById('respuesta-incorrecta-3').value;
-
-                if (pregunta && respuestaCorrecta && respuestaIncorrecta1 && respuestaIncorrecta2 && respuestaIncorrecta3) {
-                    fetch('http://localhost/DesarrolloWebF/JS/server.php', {
-                        method: 'POST',
-                        body: new URLSearchParams({
-                            action: 'insertPregunta',
-                            pregunta,
-                            respuestaCorrecta,
-                            respuestaIncorrecta1,
-                            respuestaIncorrecta2,
-                            respuestaIncorrecta3,
-                            categoriaId: document.getElementById('modal-categoria').value
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Pregunta insertada correctamente.');
-                        } else {
-                            alert('Error al insertar la pregunta.');
-                        }
-                    });
-                } else {
-                    alert('Por favor, complete todos los campos.');
-                }
-            } else if (accionActual === 'categoria') {
-                const categoria = document.getElementById('categoria').value;
-                if (categoria) {
-                    fetch('http://localhost/DesarrolloWebF/JS/server.php', {
-                        method: 'POST',
-                        body: new URLSearchParams({
-                            action: 'insertCategoria',
-                            categoria
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Categoría insertada correctamente.');
-                        } else {
-                            alert('Error al insertar la categoría.');
-                        }
-                    });
-                } else {
-                    alert('Por favor, escribe una categoría.');
-                }
-            } else if (accionActual === 'activar' || accionActual === 'desactivar') {
-                const categoriaId = document.getElementById('modal-categoria').value;
-                fetch('http://localhost/DesarrolloWebF/JS/server.php', {
-                    method: 'POST',
-                    body: new URLSearchParams({
-                        action: accionActual === 'activar' ? 'activarCategoria' : 'desactivarCategoria',
-                        categoriaId
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Categoría actualizada correctamente.');
-                    } else {
-                        alert('Error al actualizar la categoría.');
-                    }
-                });
-            }
-
-            cerrarModal();
-        }
-
-        function cerrarModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-        function cargarCategorias(accion) {
-            // Cambié la lógica del estado aquí para asegurar que sea correcto
-            const estado = accion === 'activar' ? 1 : 0;  // Si es 'activar', buscar categorías activas (estado=1), si es 'desactivar', inactivas (estado=0)
+        // Obtener categorías al cargar la página
+        document.addEventListener("DOMContentLoaded", function () {
+            const data = new FormData();
+            data.append('action', 'Category');
             fetch('http://localhost/DesarrolloWebF/JS/server.php', {
                 method: 'POST',
-                body: new URLSearchParams({
-                    action: 'cargarCategorias',
-                    estado: estado
-                })
+                body: data
             })
-            .then(response => response.json())
-            .then(data => {
-                const select = document.getElementById('modal-categoria');
-                select.innerHTML = ''; // Limpiar el contenido anterior
-                data.forEach(categoria => {
-                    const option = document.createElement('option');
-                    option.value = categoria.id;
-                    option.textContent = categoria.name;
-                    select.appendChild(option);
-                });
-            });
-        }
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al obtener las categorías, estado: ' + response.status);
+                    }
+                    return response.text();  // Obtener la respuesta como texto primero
+                })
+                .then(text => {
+                    try {
+                        const rows = JSON.parse(text);
+                        console.log('Categorías cargadas:', rows);
+                        const container = document.getElementById('categories-container');
+                        rows.forEach(category => {
+                            const button = document.createElement('button');
+                            button.textContent = category.name;
+                            button.id = category.id;
+                            button.onclick = () => startGame(category.id);
+                            container.appendChild(button);
+                        });
+                    } catch (error) {
+                        console.error('Error al parsear JSON:', error);
+                        console.error('Respuesta del servidor:', text); 
+                    }
+                })
+                .catch(error => console.error('Error al cargar categorías:', error));
+        });
     </script>
 </body>
 </html>
