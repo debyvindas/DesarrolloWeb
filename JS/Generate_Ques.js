@@ -68,22 +68,28 @@ function showQuestion() {
     questionData.answers.forEach(answer => {
         const button = document.createElement('button');
         button.textContent = answer.text;
-        button.onclick = () => selectAnswer(answer.correct);
+        button.onclick = () => selectAnswer(button, answer.correct);  // Pasar el botón y la respuesta correcta
         answersElement.appendChild(button);
     });
 
     startTimer();
 }
 
-function selectAnswer(isCorrect) {
+function selectAnswer(button, isCorrect) {
     clearInterval(timerInterval);
 
+    // Resaltar la respuesta correcta o incorrecta
     if (isCorrect) {
-        score++;
+        button.classList.add('correct');
         feedbackElement.textContent = '¡Correcto!';
     } else {
+        button.classList.add('incorrect');
         feedbackElement.textContent = 'Incorrecto';
     }
+
+    // Deshabilitar todos los botones después de seleccionar una respuesta
+    const allButtons = answersElement.querySelectorAll('button');
+    allButtons.forEach(btn => btn.disabled = true);
 
     setTimeout(nextQuestion, 2000);
 }
@@ -125,3 +131,22 @@ function resetTimer() {
     timerElement.textContent = 10;
     feedbackElement.textContent = '';
 }
+function restartGame() {
+    // Ocultar la sección de puntuación
+    scoreSection.classList.add('hide');
+    
+    // Mostrar nuevamente la sección de selección de categorías
+    document.getElementById('category-selection').classList.remove('hide');
+
+    // Limpiar el estado del juego
+    currentQuestions = [];
+    currentQuestionIndex = 0;
+    score = 0;
+
+    // Limpiar el contenido de las preguntas y la retroalimentación
+    questionElement.textContent = '';
+    answersElement.innerHTML = '';
+    feedbackElement.textContent = '';
+    timerElement.textContent = '10';
+}
+

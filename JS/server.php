@@ -168,7 +168,7 @@ if ($request == 'POST') {
                 
                 $questionsByCategory[$category][$questionId]['answers'][] = [
                     'text' => $row['answer'],
-                    'correct' => $row['Correcta'] === 'yes'
+                    'correct' => $row['Correcta'] === 'Si' || 'yes'
                 ];
             }
         }
@@ -211,7 +211,7 @@ if ($request == 'POST') {
                 // Agregar las respuestas a la pregunta correspondiente
                 $questions[$questionId]['answers'][] = [
                     'text' => $row['answer'],
-                    'correct' => $row['Correcta'] === 'yes'
+                    'correct' => $row['Correcta'] === 'Si'
                 ];
             }
         }
@@ -265,7 +265,7 @@ if ($request == 'POST') {
                 // Agregar la respuesta a la pregunta correspondiente
                 $questions[$questionId]['answers'][] = [
                     'text' => $row['answer'],
-                    'correct' => $row['Correcta'] === 'yes'
+                    'correct' => $row['Correcta'] === 'Si'
                 ];
             }
         }
@@ -302,29 +302,29 @@ if ($request == 'POST') {
         echo json_encode($questionsArray, JSON_PRETTY_PRINT);
         $conn->close();
     }
-    if ($action == 'getProfileData') {
-    $correo = $_POST['correo'];
+        elseif ($action == 'getProfileData') {
+        $correo = $_POST['correo1'];
+        $sql_check2 = "SELECT Nombre, Correo, ID_Rol FROM usuario WHERE Correo = ?";
+        $stmt = $conn->prepare($sql_check2);
+        $stmt->bind_param("s", $correo);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    $sql = "SELECT Nombre, Correo, ID_Rol FROM usuario WHERE Correo = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $correo);
-    $stmt->execute();
-    $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc(); 
+            // Obtener los datos del usuario
+            echo json_encode([
+                "success" => true,
+                "nombre" => $user['Nombre'],
+                "correo" => $user['Correo'],
+                "rol" => $user['ID_Rol']
+            ]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Usuario no encontrado."]);
+        }
 
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc(); // Obtener los datos del usuario
-        echo json_encode([
-            "success" => true,
-            "nombre" => $user['Nombre'],
-            "correo" => $user['Correo'],
-            "rol" => $user['ID_Rol']
-        ]);
-    } else {
-        echo json_encode(["success" => false, "message" => "Usuario no encontrado."]);
+        $conn->close();
     }
-
-    $conn->close();
-}
 
     
     

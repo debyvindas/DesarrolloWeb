@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
+    
     const correo = localStorage.getItem('correo');  // Recupera el correo desde el localStorage
-
+    console.log(correo);
     if (!correo) {
         alert('No se encontró información del usuario. Por favor, inicia sesión.');
         window.location.href = "login.html";  // Redirigir al login si no hay correo
@@ -13,12 +14,13 @@ document.addEventListener('DOMContentLoaded', function () {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             action: 'getProfileData',
-            correo: correo
+            correo1: correo
         })
     })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                
                 // Si la solicitud fue exitosa, muestra los datos en el perfil
                 document.getElementById('user-name').textContent = `Nombre: ${data.nombre}`;
                 document.getElementById('correo').textContent = `Correo: ${data.correo}`;

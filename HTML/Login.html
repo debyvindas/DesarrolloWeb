@@ -27,7 +27,7 @@
             <button class="close-modal" onclick="closeModal()">×</button>
 
             <!-- Formulario Login -->
-            <div>
+            <div class="centrar">
                 <form id="loginForm" class="form-container">
                     <h2>Iniciar Sesión</h2>
                     <label for="correo">Correo:</label>
@@ -39,7 +39,7 @@
             </div>
 
             <!-- Formulario Sign Up -->
-            <div>
+            <div class="centrar">
                 <form id="signUpForm" class="form-container" style="display: none;">
                     <h2>Registrar</h2>
                     <label for="nombre">Nombre:</label>
@@ -61,6 +61,7 @@
             document.getElementById('signUpForm').style.display = 'none';
             document.getElementById('FirstModal').style.display = 'block';
             document.getElementById('loginForm').style.justifySelf = 'center';
+        
         }
 
         // Función para abrir el modal de registro

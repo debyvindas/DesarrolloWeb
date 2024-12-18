@@ -119,7 +119,21 @@ button:hover {
     display: none;
 }
 
+.category-button {
+    margin: 10px; /* Espacio entre los botones */
+}
 
+button.correct {
+    background-color: green;
+    color: white;
+    border-color: green;
+}
+
+button.incorrect {
+    background-color: red;
+    color: white;
+    border-color: red;
+}
 /*
 * {
     box-sizing: border-box;

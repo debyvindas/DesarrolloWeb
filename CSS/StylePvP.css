@@ -122,8 +122,30 @@ button:hover {
 }
 
 /* Respuestas */
+
+/* Centrar el contenedor de respuestas */
 #answers {
+    display: flex;  /* Habilitar el uso de flexbox */
+    flex-direction: column;  /* Alinear los botones en columna */
+    align-items: center;  /* Centrar los botones horizontalmente */
+    justify-content: center;  /* Centrar los botones verticalmente si es necesario */
+    width: 100%;
     margin-top: 1.5em;
     font-size: 1.2em;
-    color: #fff; /* Texto blanco */
+    color: #fff;   /* Hacer que el contenedor ocupe todo el ancho disponible */
+}
+
+/* Estilos de los botones */
+.answer-button {
+    display: block;  /* Hace que los botones se apilen verticalmente */
+    margin: 10px 0;  /* Espacio entre los botones */
+    padding: 10px 20px;  /* Relleno dentro de cada botón */
+    font-size: 16px;  /* Tamaño del texto */
+    cursor: pointer;  /* Cambia el cursor al pasar sobre el botón */
+    width: 200px;  /* Ajusta el tamaño de los botones */
+    text-align: center;  /* Centra el texto dentro del botón */
+}
+
+.answer-button:hover {
+    background-color: #e0e0e0;  /* Cambia el fondo al pasar el mouse sobre el botón */
 }
